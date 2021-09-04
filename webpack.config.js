@@ -1,6 +1,8 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ModuleFederationPlugin = require('webpack').container.ModuleFederationPlugin;
+const { ModuleFederationPlugin } = require('webpack').container;
 const deps = require('./package.json').dependencies;
+
+const appName = 'template-app';
 
 module.exports = {
   entry: './src/index',
@@ -9,7 +11,14 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     historyApiFallback: true,
-    port: 3100
+    port: 3100,
+    client: {
+      logging: 'info',
+      progress: true,
+    },
+    compress: true,
+    hot: true,
+    open: true,
   },
   optimization: {
     minimize: false,
@@ -18,30 +27,24 @@ module.exports = {
     publicPath: 'auto',
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.mjs'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   module: {
     rules: [
       {
-        test: /\.m?js$/,
-        type: 'javascript/auto',
-        resolve: {
-          fullySpecified: false,
-        },
-      },
-      {
-        test: /bootstrap\.(js|jsx|ts|tsx)$/,
+        test: /bootstrap\.(jsx|tsx)$/,
         loader: require.resolve('bundle-loader'),
         options: {
           lazy: true,
         },
       },
       {
-        test: /\.(js|jsx|mjs|ts|tsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         loader: require.resolve('babel-loader'),
         exclude: /node_modules/,
         options: {
           presets: [
+            require.resolve('@babel/preset-env'),
             require.resolve('@babel/preset-react'),
             require.resolve('@babel/preset-typescript'),
           ],
@@ -51,7 +54,7 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'test_app',
+      name: appName,
       filename: 'remoteEntry.js',
       remotes: {},
       shared: {

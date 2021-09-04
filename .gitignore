@@ -1,0 +1,15 @@
+### App ####
+node_modules/
+dist/
+
+### Jetbrains ###
+.idea/
+
+### Mac ###
+.DS_Store
+
+### Testing ###
+test_coverage/
+
+### VS Code ###
+.vscode/

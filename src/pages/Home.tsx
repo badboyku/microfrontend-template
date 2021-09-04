@@ -1,7 +1,14 @@
 import * as React from 'react';
+import HelloWorld from '../components/HelloWorld';
 
-export default (_props: object) => {
+type Props = {};
+
+const Home: React.FC<Props> = (_props) => {
   return (
-    <div>Hello World!</div>
+    <div>
+      <HelloWorld />
+    </div>
   );
 };
+
+export default Home;

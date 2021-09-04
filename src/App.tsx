@@ -2,10 +2,14 @@ import * as React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from './routes';
 
-export default (props: object) => {
+type Props = {};
+
+const App: React.FC<Props> = (_props) => {
   return (
     <BrowserRouter>
-      <Routes {...props} />
+      <Routes />
     </BrowserRouter>
   );
 };
+
+export default App;

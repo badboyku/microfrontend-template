@@ -11,41 +11,37 @@
     "plugin:jsx-a11y/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
   "parser": "@babel/eslint-parser",
-  "plugins": ["import", "jsx-a11y", "react", "react-hooks", "prettier"],
+  "plugins": [
+    "import",
+    "jsx-a11y",
+    "react",
+    "react-hooks",
+    "@typescript-eslint",
+    "prettier"
+  ],
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     }
   },
   "rules": {
-    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
-    "no-param-reassign": ["warn", { "props": false }],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "react/forbid-prop-types": 0,
-    "react/display-name": 0,
-    "react/jsx-curly-newline": 0,
-    "react/jsx-filename-extension": 0,
-    "react/jsx-first-prop-new-line": 0,
-    "react/jsx-no-bind": 2,
+    "import/extensions": [1, "ignorePackages", { "js": "never", "jsx": "never", "ts": "never", "tsx": "never" }],
+    "no-unused-vars": [1, { "argsIgnorePattern": "^_" }],
+    "linebreak-style": [2, "unix"],
+    "quotes": [2, "single"],
     "react/jsx-props-no-spreading": 0,
-    "react/no-multi-comp": 0,
-    "react/no-unused-prop-types": 2,
-    "react/no-undef": 0,
-    "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],
-    "react/prop-types": 0,
-    "react/require-default-props": 0,
-    "prettier/prettier": [
-      "error",
-      {
-        "printWidth": 120,
-        "semi": true,
-        "singleQuote": true,
-        "tabWidth": 2
-      }
-    ]
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
+    "@typescript-eslint/ban-types": [1, { "extendDefaults": true, "types": { "{}": false } }],
+    "@typescript-eslint/no-unused-vars": [1, { "argsIgnorePattern": "^_" }],
+    "prettier/prettier": [2, { "printWidth": 120, "semi": true, "singleQuote": true }]
   }
 }
