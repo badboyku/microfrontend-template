@@ -1,6 +1,6 @@
 {
   "name": "template-app",
-  "description": "MFE react app with javascript/typescript support used as a template for starting a MFE app",
+  "description": "This is a template for creating a micro-frontend react app with typescript/javascript support.",
   "version": "1.0.0",
   "private": true,
   "author": "badboyku",
