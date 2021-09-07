@@ -57,11 +57,6 @@
       "jest-watch-typeahead/testname"
     ]
   },
-  "prettier": {
-    "printWidth": 120,
-    "semi": true,
-    "singleQuote": true
-  },
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -81,7 +76,7 @@
     "babel-jest": "^27.1.0",
     "babel-loader": "^8.2.2",
     "bundle-loader": "^0.5.6",
-    "eslint-config-badboyku": "ssh://git@github.com:badboyku/eslint-config-badboyku.git#1.0.2",
+    "eslint-config-badboyku": "badboyku/eslint-config-badboyku.git",
     "html-webpack-plugin": "^5.3.2",
     "jest": "^27.1.0",
     "jest-watch-typeahead": "^0.6.4",

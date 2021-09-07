@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
-    "strict": true,
+    "esModuleInterop": true,
     "jsx": "react",
-    "removeComments": true
+    "removeComments": true,
+    "sourceMap": true,
+    "strict": true
   },
   "include": ["src/**/*"]
 }
