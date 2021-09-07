@@ -2,7 +2,7 @@ import * as React from 'react';
 
 type Props = {};
 
-const HelloWorld: React.FC<Props> = (_props) => {
+const HelloWorld = (_props: Props): JSX.Element => {
   return <div>Hello World!</div>;
 };
 

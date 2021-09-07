@@ -1,5 +1,5 @@
 {
-  "name": "template-app",
+  "name": "microfrontend-template",
   "description": "This is a template for creating a micro-frontend react app with typescript/javascript support.",
   "version": "1.0.0",
   "private": true,
@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/badboyku/test-app.git"
+    "url": "https://github.com/badboyku/microfrontend-template.git"
   },
   "main": "src/index",
   "scripts": {
@@ -36,7 +36,8 @@
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/**/*.d.ts",
-      "!src/index.tsx"
+      "!src/index.tsx",
+      "!src/bootstrap.tsx"
     ],
     "coverageDirectory": "test_coverage",
     "coverageThreshold": {
@@ -63,20 +64,20 @@
     "react-router-dom": "^5.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.4",
-    "@babel/preset-env": "^7.15.0",
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.4",
     "@babel/preset-react": "^7.14.5",
     "@babel/preset-typescript": "^7.15.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@types/jest": "^27.0.1",
-    "@types/react": "^17.0.19",
+    "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.1.8",
     "babel-jest": "^27.1.0",
     "babel-loader": "^8.2.2",
     "bundle-loader": "^0.5.6",
-    "eslint-config-badboyku": "badboyku/eslint-config-badboyku.git",
+    "eslint-config-badboyku": "badboyku/eslint-config-badboyku",
     "html-webpack-plugin": "^5.3.2",
     "jest": "^27.1.0",
     "jest-watch-typeahead": "^0.6.4",

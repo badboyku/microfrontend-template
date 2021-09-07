@@ -4,7 +4,7 @@ import Routes from './routes';
 
 type Props = {};
 
-const App: React.FC<Props> = (_props) => {
+const App = (_props: Props): JSX.Element => {
   return (
     <BrowserRouter>
       <Routes />

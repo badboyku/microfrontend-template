@@ -3,7 +3,7 @@ import HelloWorld from '../components/HelloWorld';
 
 type Props = {};
 
-const Home: React.FC<Props> = (_props) => {
+const Home = (_props: Props): JSX.Element => {
   return (
     <div>
       <HelloWorld />

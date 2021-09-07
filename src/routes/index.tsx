@@ -4,7 +4,7 @@ import HomePage from '../pages/Home';
 
 type Props = {};
 
-const Routes: React.FC<Props> = (_props) => {
+const Routes = (_props: Props): JSX.Element => {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
