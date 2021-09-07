@@ -1,45 +1,42 @@
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
 const deps = require('./package.json').dependencies;
 
+const isDevelopment = true;
 const appName = 'template-app';
+const appPort = 3100;
 
 module.exports = {
-  entry: './src/index',
+  mode: isDevelopment ? 'development' : 'production',
   cache: false,
-  mode: 'development',
-  devtool: 'source-map',
   devServer: {
-    historyApiFallback: true,
-    port: 3100,
-    client: {
-      logging: 'info',
-      progress: true,
-    },
+    client: { logging: 'info', progress: true },
     compress: true,
+    historyApiFallback: true,
     hot: true,
     open: true,
+    port: appPort,
   },
+  devtool: isDevelopment ? 'source-map' : false,
+  entry: './src/index',
   optimization: {
-    minimize: false,
+    minimize: !isDevelopment,
+    minimizer: [new CssMinimizerPlugin()],
   },
   output: {
     publicPath: 'auto',
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
   },
   module: {
     rules: [
+      { test: /bootstrap\.(jsx|tsx)$/, loader: require.resolve('bundle-loader'), options: { lazy: true } },
+      { test: /\.(bmp|gif|jpg|jpeg|png)$/, loader: require.resolve('url-loader') },
       {
-        test: /bootstrap\.(jsx|tsx)$/,
-        loader: require.resolve('bundle-loader'),
-        options: {
-          lazy: true,
-        },
-      },
-      {
-        test: /\.(js|jsx|ts|tsx)$/,
+        test: /\.(js|mjs|jsx|ts|tsx)$/,
         loader: require.resolve('babel-loader'),
         exclude: /node_modules/,
         options: {
@@ -50,6 +47,27 @@ module.exports = {
           ],
         },
       },
+      {
+        test: /\.css$/,
+        use: [
+          require.resolve('style-loader'),
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: require.resolve('css-loader'), options: { importLoaders: 1, sourcemap: isDevelopment } },
+          { loader: require.resolve('postcss-loader'), options: { sourcemap: isDevelopment } },
+        ],
+      },
+      {
+        test: /\.(sass|scss)$/,
+        use: [
+          require.resolve('style-loader'),
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: require.resolve('css-loader'), options: { importLoaders: 3, sourcemap: isDevelopment } },
+          { loader: require.resolve('postcss-loader'), options: { sourcemap: isDevelopment } },
+          { loader: require.resolve('resolve-url-loader'), options: { sourcemap: isDevelopment } },
+          { loader: require.resolve('sass-loader'), options: { sourcemap: isDevelopment } },
+        ],
+      },
+      { loader: require.resolve('file-loader'), exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/] },
     ],
   },
   plugins: [
@@ -63,6 +81,21 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
+      minify: isDevelopment
+        ? false
+        : {
+            collapseWhitespace: true,
+            keepClosingSlash: true,
+            minifyCSS: true,
+            minifyJS: true,
+            minifyURLs: true,
+            removeComments: true,
+            removeEmptyAttributes: true,
+            removeRedundantAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            useShortDoctype: true,
+          },
     }),
+    new MiniCssExtractPlugin(),
   ],
 };
