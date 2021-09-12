@@ -28,6 +28,10 @@ module.exports = (env, args) => {
           loader: require.resolve('url-loader'),
         },
         {
+          test: /\.svg$/,
+          use: [require.resolve('@svgr/webpack'), require.resolve('url-loader')],
+        },
+        {
           test: /\.(js|mjs|jsx|ts|tsx)$/,
           loader: require.resolve('babel-loader'),
           exclude: /node_modules/,
@@ -42,27 +46,50 @@ module.exports = (env, args) => {
         {
           test: /\.css$/,
           use: [
-            { loader: require.resolve('style-loader') },
             { loader: MiniCssExtractPlugin.loader },
-            { loader: require.resolve('css-loader'), options: { importLoaders: 1, sourcemap: !isProduction } },
-            { loader: require.resolve('postcss-loader'), options: { sourcemap: !isProduction } },
+            {
+              loader: require.resolve('css-loader'),
+              options: {
+                importLoaders: 1,
+                sourceMap: !isProduction,
+              },
+            },
+            {
+              loader: require.resolve('postcss-loader'),
+              options: {
+                postcssOptions: { plugins: [require.resolve('postcss-preset-env')] },
+                sourceMap: !isProduction,
+              },
+            },
           ],
         },
         {
           test: /\.(sass|scss)$/,
           use: [
-            { loader: require.resolve('style-loader') },
             { loader: MiniCssExtractPlugin.loader },
-            { loader: require.resolve('css-loader'), options: { importLoaders: 3, sourcemap: !isProduction } },
-            { loader: require.resolve('postcss-loader'), options: { sourcemap: !isProduction } },
-            { loader: require.resolve('resolve-url-loader'), options: { sourcemap: !isProduction } },
-            { loader: require.resolve('sass-loader'), options: { sourcemap: !isProduction } },
+            {
+              loader: require.resolve('css-loader'),
+              options: {
+                importLoaders: 3,
+                sourceMap: !isProduction,
+              },
+            },
+            {
+              loader: require.resolve('postcss-loader'),
+              options: {
+                postcssOptions: { plugins: [require.resolve('postcss-preset-env')] },
+                sourceMap: !isProduction,
+              },
+            },
+            {
+              loader: require.resolve('resolve-url-loader'),
+              options: { sourceMap: !isProduction },
+            },
+            {
+              loader: require.resolve('sass-loader'),
+              options: { sourceMap: !isProduction },
+            },
           ],
-        },
-        // This should be the last rule, if you plan on adding more, add them above this file-loader rule.
-        {
-          loader: require.resolve('file-loader'),
-          exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
         },
       ],
     },
@@ -77,7 +104,7 @@ module.exports = (env, args) => {
       new HtmlWebpackPlugin({
         template: './public/index.html',
         minify: isProduction
-            ? {
+          ? {
               collapseWhitespace: true,
               keepClosingSlash: true,
               minifyCSS: true,
@@ -89,7 +116,7 @@ module.exports = (env, args) => {
               removeStyleLinkTypeAttributes: true,
               useShortDoctype: true,
             }
-            : false,
+          : false,
       }),
       new MiniCssExtractPlugin(),
     ],
