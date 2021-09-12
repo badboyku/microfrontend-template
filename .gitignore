@@ -1,6 +1,13 @@
 ### App ####
 node_modules/
 dist/
+.env
+
+### CI/CD ###
+.npmrc
+
+### Debugging ###
+*.log
 
 ### Jetbrains ###
 .idea/

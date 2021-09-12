@@ -1,15 +1,10 @@
 import * as React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import Routes from './routes';
+import Routes from './routes/index';
 
 type Props = {};
 
 const App = (_props: Props): JSX.Element => {
-  return (
-    <BrowserRouter>
-      <Routes />
-    </BrowserRouter>
-  );
+  return <Routes />;
 };
 
 export default App;
