@@ -3,23 +3,24 @@
 exports[`Component App renders without crashing 1`] = `
 <DocumentFragment>
   <div>
-    <div>
-      <div
-        class="hello-world"
-      >
-        Hello World!!!
-      </div>
-      <img
-        alt="logo"
-        class="logo"
-        src="logo.svg"
-      />
-      <svg
-        width="40"
-      >
-        logo.svg
-      </svg>
+    <h1>
+      Home
+    </h1>
+    <div
+      class="hello-world"
+    >
+      Hello World!!!
     </div>
+    <img
+      alt="logo"
+      class="logo"
+      src="logo.svg"
+    />
+    <svg
+      width="40"
+    >
+      logo.svg
+    </svg>
   </div>
 </DocumentFragment>
 `;
