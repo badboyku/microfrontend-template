@@ -1,6 +1,6 @@
 import * as React from 'react';
-import './HelloWorld.css';
 import logoUrl, {ReactComponent as Logo} from './logo.svg';
+import './styles.css';
 
 type Props = {};
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {render, screen} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import App from './App';
 
 const renderApp = (props = {}) => {
@@ -8,12 +8,7 @@ const renderApp = (props = {}) => {
 
 describe('Component App', () => {
   it('renders without crashing', () => {
-    renderApp();
-    expect(screen).toMatchSnapshot();
-  });
-
-  it('renders the default route "App" -> "Routes -> "HomePage" -> "HelloWorld"', () => {
-    renderApp();
-    expect(screen.queryByText('Hello World!')).toBeInTheDocument();
+    const { asFragment } = renderApp();
+    expect(asFragment()).toMatchSnapshot();
   });
 });

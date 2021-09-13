@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component Routes renders without crashing 1`] = `
+exports[`Component HomePage renders without crashing 1`] = `
 <DocumentFragment>
   <div>
     <div>

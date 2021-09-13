@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {render, screen} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import Home from './Home';
 
 const renderHomePage = (props = {}) => {
@@ -8,12 +8,7 @@ const renderHomePage = (props = {}) => {
 
 describe('Component HomePage', () => {
   it('renders without crashing', () => {
-    renderHomePage();
-    expect(screen).toMatchSnapshot();
-  });
-
-  it('renders HelloWorld Component', () => {
-    renderHomePage();
-    expect(screen.queryByText('Hello World!')).toBeInTheDocument();
+    const { asFragment } = renderHomePage();
+    expect(asFragment()).toMatchSnapshot();
   });
 });

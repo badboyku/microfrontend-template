@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {render, screen} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import HelloWorld from './HelloWorld';
 
 const renderHelloWorld = (props = {}) => {
@@ -10,10 +10,5 @@ describe('Component HelloWorld', () => {
   it('renders without crashing', () => {
     const { asFragment } = renderHelloWorld();
     expect(asFragment()).toMatchSnapshot();
-  });
-
-  it('renders div with "Hello World!"', () => {
-    renderHelloWorld();
-    expect(screen.queryByText('Hello World!')).toBeInTheDocument();
   });
 });
