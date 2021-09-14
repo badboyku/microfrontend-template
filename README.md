@@ -20,18 +20,22 @@ NOTE: App will be served from webpack-dev-server's default port 8080, which can 
 ---
 
 ## Module Federation Plugin
-The plugin has some options that need to be set in `webpack.config.js` file.
+This plugin is used to help bundle multiple builds into one build. There is a `bootstrap.tsx` file that is necessary for the plugin to work correctly.
 
-TODO: Need to add steps to help set "env" vars for a host app to add remote apps to the webpack config for various environments (dev, stage, prod).
+**WARNING: Do not remove file `bootstrap.tsx`**
 
-1. `name` - this is used for your application name
+_TODO: Need to add steps to help set "env" vars for a host app to add remote apps to the webpack config for various environments (dev, stage, prod)._
+
+There are some options that need to be set in `webpack.config.js` file:
+
+2. `name` - this is used for your application name
 
    Example:
    ```js
    name: 'my_app'
    ```
 
-2. `remotes` - this is used to set up your app to have remote apps
+3. `remotes` - this is used to set up your app to have remote apps
 
    Example:
    ```js
@@ -41,7 +45,7 @@ TODO: Need to add steps to help set "env" vars for a host app to add remote apps
    }
    ```
 
-3. `exposes` - this is used to set up your app to expose one or more components
+4. `exposes` - this is used to set up your app to expose one or more components
 
    Example:
    ```js
@@ -55,7 +59,7 @@ See https://github.com/module-federation/module-federation-examples as reference
 
 ---
 
-## ESLint
+## Code Formatting with ESLint
 ESLint has been set up with using the config from: [@badboyku/eslint-config-badboyku](https://github.com/badboyku/eslint-config-badboyku)
 - To run eslint: `yarn lint`
 - To run eslint with fix: `yarn lint:fix`
@@ -71,7 +75,7 @@ rules: {
 
 ---
 
-## Jest
+## Testing with Jest
 Jest has been set up with coverage needing at least 80%. We are following industry standards to keep test files and snapshots in the src folder.
 - To run jest: `yarn test`
 - To run jest test coverage: `yarn test:coverage`

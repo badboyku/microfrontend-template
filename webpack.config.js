@@ -47,13 +47,7 @@ module.exports = (env, args) => {
           test: /\.css$/,
           use: [
             { loader: MiniCssExtractPlugin.loader },
-            {
-              loader: require.resolve('css-loader'),
-              options: {
-                importLoaders: 1,
-                sourceMap: !isProduction,
-              },
-            },
+            { loader: require.resolve('css-loader'), options: { importLoaders: 1, sourceMap: !isProduction } },
             {
               loader: require.resolve('postcss-loader'),
               options: {
@@ -67,13 +61,7 @@ module.exports = (env, args) => {
           test: /\.(sass|scss)$/,
           use: [
             { loader: MiniCssExtractPlugin.loader },
-            {
-              loader: require.resolve('css-loader'),
-              options: {
-                importLoaders: 3,
-                sourceMap: !isProduction,
-              },
-            },
+            { loader: require.resolve('css-loader'), options: { importLoaders: 3, sourceMap: !isProduction } },
             {
               loader: require.resolve('postcss-loader'),
               options: {
@@ -81,14 +69,8 @@ module.exports = (env, args) => {
                 sourceMap: !isProduction,
               },
             },
-            {
-              loader: require.resolve('resolve-url-loader'),
-              options: { sourceMap: !isProduction },
-            },
-            {
-              loader: require.resolve('sass-loader'),
-              options: { sourceMap: !isProduction },
-            },
+            { loader: require.resolve('resolve-url-loader'), options: { sourceMap: !isProduction } },
+            { loader: require.resolve('sass-loader'), options: { sourceMap: true } },
           ],
         },
       ],
@@ -135,7 +117,10 @@ module.exports = (env, args) => {
   };
 
   const productionConfig = {
-    optimization: { minimize: true, minimizer: [new CssMinimizerPlugin()] },
+    optimization: {
+      minimize: true,
+      minimizer: [new CssMinimizerPlugin()],
+    },
   };
 
   return isProduction ? merge([commonConfig, productionConfig]) : merge([commonConfig, developmentConfig]);
