@@ -3332,8 +3332,8 @@ eslint-config-airbnb@^18.2.1:
     object.entries "^1.1.2"
 
 eslint-config-badboyku@badboyku/eslint-config-badboyku:
-  version "1.0.8"
-  resolved "git+ssh://git@github.com/badboyku/eslint-config-badboyku.git#7d9cf7fba1693be2226dd7f5b7131b1ff8f9c970"
+  version "1.0.0"
+  resolved "git+ssh://git@github.com/badboyku/eslint-config-badboyku.git#962ae1aba15534868786576dc4c54231951a4323"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^4.31.2"
     "@typescript-eslint/parser" "^4.31.2"
