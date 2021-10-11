@@ -37,10 +37,11 @@ module.exports = (env, args) => {
           exclude: /node_modules/,
           options: {
             presets: [
-              require.resolve('@babel/preset-env'),
+              [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.6.5' }],
               require.resolve('@babel/preset-react'),
               require.resolve('@babel/preset-typescript'),
             ],
+            plugins: [[require.resolve('@babel/plugin-transform-runtime'), { corejs: 3, proposals: true }]],
           },
         },
         {
