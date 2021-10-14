@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import HomePage from '../pages/Home/Home';
+import HomePage from '../pages/Home';
 
 type Props = {};
 
-const Routes = (_props: Props): JSX.Element => {
+const Routes: React.FC<Props> = (_props) => {
   return (
     <BrowserRouter>
       <Switch>

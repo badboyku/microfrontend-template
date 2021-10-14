@@ -3,8 +3,8 @@ import './styles.css';
 
 type Props = {};
 
-const HelloWorld = (_props: Props): JSX.Element => {
-  return <div className="hello-world">Hello World!!!</div>;
+const HelloWorld: React.FC<Props> = (_props) => {
+  return <div className="hello-world">Hello World!</div>;
 };
 
 export default HelloWorld;

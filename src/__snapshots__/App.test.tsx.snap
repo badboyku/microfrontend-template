@@ -9,7 +9,7 @@ exports[`Component App renders without crashing 1`] = `
     <div
       class="hello-world"
     >
-      Hello World!!!
+      Hello World!
     </div>
     <img
       alt="logo"

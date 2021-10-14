@@ -3,7 +3,7 @@ import Routes from './routes/index';
 
 type Props = {};
 
-const App = (_props: Props): JSX.Element => {
+const App: React.FC<Props> = (_props) => {
   return <Routes />;
 };
 
