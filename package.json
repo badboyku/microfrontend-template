@@ -1,7 +1,7 @@
 {
   "name": "microfrontend-template",
   "description": "This is a template for creating a micro-frontend react app.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "badboyku",
   "license": "MIT",
   "repository": {
