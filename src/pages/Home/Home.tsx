@@ -1,5 +1,5 @@
 import * as React from 'react';
-import HelloWorld from '../../components/HelloWorld';
+import { HelloWorld } from '../../components';
 import logoUrl, { ReactComponent as Logo } from './logo.svg';
 import './style.scss';
 import './styles.css';

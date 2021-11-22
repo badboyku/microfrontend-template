@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import HomePage from '../pages/Home';
+import { Home as HomePage } from '../pages';
 
 type Props = {};
 
