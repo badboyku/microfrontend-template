@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import HelloWorld from './HelloWorld';
 
 const renderHelloWorld = (props = {}) => {
@@ -7,8 +7,24 @@ const renderHelloWorld = (props = {}) => {
 };
 
 describe('Component HelloWorld', () => {
-  it('renders without crashing', () => {
-    const { asFragment } = renderHelloWorld();
-    expect(asFragment()).toMatchSnapshot();
+  describe('when called', () => {
+    let docFragment: { (): DocumentFragment };
+
+    beforeEach(() => {
+      const { asFragment } = renderHelloWorld();
+      docFragment = asFragment;
+    });
+
+    afterEach(() => {
+      cleanup();
+    });
+
+    it('renders without crashing', () => {
+      expect(docFragment()).toMatchSnapshot();
+    });
+
+    it('matches the snapshot', () => {
+      expect(screen).toMatchSnapshot();
+    });
   });
 });

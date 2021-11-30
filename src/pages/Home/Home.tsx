@@ -6,7 +6,7 @@ import './styles.css';
 
 type Props = {};
 
-const Home: React.FC<Props> = (_props) => {
+const Home: React.FC<Props> = (_props: Props) => {
   return (
     <div>
       <h1>Home</h1>

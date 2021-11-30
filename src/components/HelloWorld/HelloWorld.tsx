@@ -3,7 +3,7 @@ import './styles.css';
 
 type Props = {};
 
-const HelloWorld: React.FC<Props> = (_props) => {
+const HelloWorld: React.FC<Props> = (_props: Props) => {
   return <div className="hello-world">Hello World!</div>;
 };
 

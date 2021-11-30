@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import Home from './Home';
 
 const renderHomePage = (props = {}) => {
@@ -7,8 +7,24 @@ const renderHomePage = (props = {}) => {
 };
 
 describe('Component HomePage', () => {
-  it('renders without crashing', () => {
-    const { asFragment } = renderHomePage();
-    expect(asFragment()).toMatchSnapshot();
+  describe('when called', () => {
+    let docFragment: { (): DocumentFragment };
+
+    beforeEach(() => {
+      const { asFragment } = renderHomePage();
+      docFragment = asFragment;
+    });
+
+    afterEach(() => {
+      cleanup();
+    });
+
+    it('renders without crashing', () => {
+      expect(docFragment()).toMatchSnapshot();
+    });
+
+    it('matches the snapshot', () => {
+      expect(screen).toMatchSnapshot();
+    });
   });
 });
