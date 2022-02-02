@@ -11,8 +11,8 @@ Includes support for:
 ---
 
 ## Quickstart
-1. Install dependencies: `yarn install`
-2. Start the app: `yarn start`
+1. Install dependencies: `yarn install` or `npm install`
+2. Start the app: `yarn start` or `npm start`
     1. Browser should automatically open to [http://localhost:8080](http://localhost:8080)
 
 NOTE: App will be served from webpack-dev-server's default port 8080, which can be changed by following the .env.example in the repo.
@@ -24,18 +24,16 @@ This plugin is used to help bundle multiple builds into one build. There is a `b
 
 **WARNING: Do not remove file `bootstrap.tsx`**
 
-_TODO: Need to add steps to help set "env" vars for a host app to add remote apps to the webpack config for various environments (dev, stage, prod)._
-
 There are some options that need to be set in `webpack.config.js` file:
 
-2. `name` - this is used for your application name
+1. `name` - this is used for your application name
 
    Example:
    ```js
    name: 'my_app'
    ```
 
-3. `remotes` - this is used to set up your app to have remote apps
+2. `remotes` - this is used to set up your app to have remote apps
 
    Example:
    ```js
@@ -45,7 +43,7 @@ There are some options that need to be set in `webpack.config.js` file:
    }
    ```
 
-4. `exposes` - this is used to set up your app to expose one or more components
+3. `exposes` - this is used to set up your app to expose one or more components
 
    Example:
    ```js
@@ -61,8 +59,8 @@ See https://github.com/module-federation/module-federation-examples as reference
 
 ## Code Formatting with ESLint
 ESLint has been set up with using the config from: [@badboyku/eslint-config-badboyku](https://github.com/badboyku/eslint-config-badboyku)
-- To run eslint: `yarn lint`
-- To run eslint with fix: `yarn lint:fix`
+- To run eslint: `yarn lint` or `npm run lint`
+- To run eslint with fix: `yarn lint:fix` or `npm run lint:fix`
 
 NOTE: You are able to override a rule by updating the rules inside the `.eslintrc.js` file.
 
@@ -75,11 +73,18 @@ rules: {
 
 ---
 
+## Code Formatting with Prettier
+Prettier has been configured to help format css, scss, json files
+- To run prettier: `yarn prettier` or `npm run prettier`
+- To run prettier with fix: `yarn prettier:fix` or `npm run prettier:fix`
+---
+
 ## Testing with Jest
 Jest has been set up with coverage needing at least 80%. We are following industry standards to keep test files and snapshots in the src folder.
-- To run jest: `yarn test`
-- To run jest test coverage: `yarn test:coverage`
-- To run jest watch mode: `yarn test:watch`
+- To run jest: `yarn test` or `npm test`
+- To run jest and update snapshots: `yarn test -u` or `npm test -u`
+- To run jest test coverage: `yarn test:coverage` or `npm test:coverage`
+- To run jest watch mode: `yarn test:watch` or `npm test:watch`
 
 ---
 

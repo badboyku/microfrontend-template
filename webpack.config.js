@@ -2,13 +2,26 @@ require('dotenv').config();
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { DefinePlugin } = require('webpack');
 const { ModuleFederationPlugin } = require('webpack').container;
 const { merge } = require('webpack-merge');
+const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const deps = require('./package.json').dependencies;
 
 module.exports = (env, args) => {
   const mode = args.mode || 'development';
   const isProduction = mode === 'production';
+
+  const envVars = {
+    IS_DEV: !isProduction,
+    IS_PROD: isProduction,
+    PUBLIC_URL: process.env.PUBLIC_URL || '',
+  };
+  const envVarsStringified = Object.keys(envVars).reduce((envVar, key) => {
+    envVar[`ENV_${key}`] = JSON.stringify(envVars[key]);
+
+    return envVar;
+  }, {});
 
   const commonConfig = {
     mode,
@@ -77,6 +90,7 @@ module.exports = (env, args) => {
       ],
     },
     plugins: [
+      new DefinePlugin(envVarsStringified),
       new ModuleFederationPlugin({
         name: 'my_app',
         filename: 'remoteEntry.js',
@@ -101,6 +115,7 @@ module.exports = (env, args) => {
             }
           : false,
       }),
+      new InterpolateHtmlPlugin(envVars),
       new MiniCssExtractPlugin(),
     ],
   };
