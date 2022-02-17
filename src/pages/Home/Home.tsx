@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { HelloWorld } from '../../components';
-import { getEnvVars } from '../../utils/envVars';
 import logoUrl, { ReactComponent as Logo } from './logo.svg';
 import './style.scss';
 import './styles.css';
+import type { ReactAppEnvVars } from '../../@types/global';
 
 type Props = {};
 
 const Home: React.FC<Props> = (_props: Props) => {
-  const envVars = getEnvVars();
-  const { IS_DEV, IS_PROD, PUBLIC_URL, REACT_APP_MY_ENVVAR } = envVars;
+  const { _env_: env = {} } = window;
+  const { REACT_APP_MY_VAR: reactAppMyVar } = env as ReactAppEnvVars;
 
   return (
     <div>
@@ -27,8 +27,12 @@ const Home: React.FC<Props> = (_props: Props) => {
       <div>
         PUBLIC_URL: <span style={{ fontWeight: 'bold' }}>{PUBLIC_URL}</span>
       </div>
+      <h4>Custom React App Env Vars</h4>
       <div>
-        REACT_APP_MY_ENVVAR: <span style={{ fontWeight: 'bold' }}>{REACT_APP_MY_ENVVAR}</span>
+        Buildtime: REACT_APP_MY_ENVVAR: <span style={{ fontWeight: 'bold' }}>{REACT_APP_MY_VAR}</span>
+      </div>
+      <div>
+        Runtime: REACT_APP_MY_ENVVAR: <span style={{ fontWeight: 'bold' }}>{reactAppMyVar}</span>
       </div>
     </div>
   );

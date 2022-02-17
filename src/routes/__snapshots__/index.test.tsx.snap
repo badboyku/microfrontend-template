@@ -101,13 +101,20 @@ exports[`Component Routes when called renders without crashing 1`] = `
         style="font-weight: bold;"
       />
     </div>
+    <h4>
+      Custom React App Env Vars
+    </h4>
     <div>
-      REACT_APP_MY_ENVVAR: 
+      Buildtime: REACT_APP_MY_ENVVAR: 
       <span
         style="font-weight: bold;"
-      >
-        test
-      </span>
+      />
+    </div>
+    <div>
+      Runtime: REACT_APP_MY_ENVVAR: 
+      <span
+        style="font-weight: bold;"
+      />
     </div>
   </div>
 </DocumentFragment>

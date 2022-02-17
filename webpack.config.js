@@ -8,17 +8,26 @@ const { merge } = require('webpack-merge');
 const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const deps = require('./package.json').dependencies;
 
-module.exports = (env, args) => {
+module.exports = (_env, args) => {
   const mode = args.mode || 'development';
   const isProduction = mode === 'production';
 
-  const envVars = {
-    IS_DEV: !isProduction,
-    IS_PROD: isProduction,
-    PUBLIC_URL: process.env.PUBLIC_URL || '',
-  };
+  const envVars = Object.keys(process.env)
+    .filter((key) => /^REACT_APP_/i.test(key))
+    .reduce(
+      (env, key) => {
+        env[key] = process.env[key];
+
+        return env;
+      },
+      {
+        IS_DEV: !isProduction,
+        IS_PROD: isProduction,
+        PUBLIC_URL: process.env.PUBLIC_URL || '',
+      },
+    );
   const envVarsStringified = Object.keys(envVars).reduce((envVar, key) => {
-    envVar[`ENV_${key}`] = JSON.stringify(envVars[key]);
+    envVar[key] = JSON.stringify(envVars[key]);
 
     return envVar;
   }, {});

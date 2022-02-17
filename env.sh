@@ -41,9 +41,9 @@ if is_dev; then
   echo "Locating other env vars to add."
 fi
 if [ -n "$env_file" ]; then
-  env_file_config=$(grep -E '^(REACT_)' $env_file)
+  env_file_config=$(grep -E '^(REACT_APP_)' $env_file)
 fi
-env_config=$(printenv | grep -E '^(REACT_)')
+env_config=$(printenv | grep -E '^(REACT_APP_)')
 all_env_config=$(echo -e "$env_file_config\n$env_config" | sed '/^$/d')
 
 if [ -n "$all_env_config" ]; then
