@@ -1,6 +1,7 @@
 ### App ####
 node_modules/
 dist/
+public/env-config.js
 .env
 
 ### CI/CD ###
