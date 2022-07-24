@@ -36,7 +36,16 @@ module.exports = (_env, args) => {
     mode,
     cache: false,
     entry: './src/index',
-    output: { publicPath: 'auto' },
+    output: {
+      publicPath: 'auto',
+      ...(isProduction
+        ? {
+            assetModuleFilename: '[name].[contenthash][ext][query]',
+            chunkFilename: '[name].[contenthash].js',
+            filename: '[name].[contenthash].js',
+          }
+        : {}),
+    },
     resolve: { extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'] },
     module: {
       rules: [
@@ -125,7 +134,9 @@ module.exports = (_env, args) => {
           : false,
       }),
       new InterpolateHtmlPlugin(envVars),
-      new MiniCssExtractPlugin(),
+      new MiniCssExtractPlugin({
+        ...(isProduction ? { filename: '[name].[contenthash].css' } : {}),
+      }),
     ],
   };
 

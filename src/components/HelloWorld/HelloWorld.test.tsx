@@ -1,30 +1,20 @@
 import * as React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import HelloWorld from './HelloWorld';
+import type { Props } from './HelloWorld';
 
-const renderHelloWorld = (props = {}) => {
+const defaultProps = {};
+
+const renderHelloWorld = (props: Props = defaultProps) => {
   return render(<HelloWorld {...props} />);
 };
 
 describe('Component HelloWorld', () => {
   describe('when called', () => {
-    let docFragment: { (): DocumentFragment };
-
-    beforeEach(() => {
-      const { asFragment } = renderHelloWorld();
-      docFragment = asFragment;
-    });
-
-    afterEach(() => {
-      cleanup();
-    });
-
     it('renders without crashing', () => {
-      expect(docFragment()).toMatchSnapshot();
-    });
+      const { asFragment } = renderHelloWorld();
 
-    it('matches the snapshot', () => {
-      expect(screen).toMatchSnapshot();
+      expect(asFragment()).toMatchSnapshot();
     });
   });
 });

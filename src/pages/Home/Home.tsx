@@ -5,9 +5,10 @@ import './style.scss';
 import './styles.css';
 import type { ReactAppEnvVars } from '../../@types/global';
 
-type Props = {};
+export type Props = {};
 
 const Home: React.FC<Props> = (_props: Props) => {
+  /* istanbul ignore next */
   const { _env_: env = {} } = window;
   const { REACT_APP_MY_VAR: reactAppMyVar } = env as ReactAppEnvVars;
 

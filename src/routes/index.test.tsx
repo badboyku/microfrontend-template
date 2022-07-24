@@ -1,30 +1,20 @@
 import * as React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Routes from './index';
+import type { Props } from './index';
 
-const renderRoutes = (props = {}) => {
+const defaultProps = {};
+
+const renderRoutes = (props: Props = defaultProps) => {
   return render(<Routes {...props} />);
 };
 
 describe('Component Routes', () => {
   describe('when called', () => {
-    let docFragment: { (): DocumentFragment };
-
-    beforeEach(() => {
-      const { asFragment } = renderRoutes();
-      docFragment = asFragment;
-    });
-
-    afterEach(() => {
-      cleanup();
-    });
-
     it('renders without crashing', () => {
-      expect(docFragment()).toMatchSnapshot();
-    });
+      const { asFragment } = renderRoutes();
 
-    it('matches the snapshot', () => {
-      expect(screen).toMatchSnapshot();
+      expect(asFragment()).toMatchSnapshot();
     });
   });
 });

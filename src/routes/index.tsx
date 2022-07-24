@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home } from '../pages';
 
-type Props = {};
+export type Props = {};
 
 const AppRoutes: React.FC<Props> = (_props: Props) => {
   return (

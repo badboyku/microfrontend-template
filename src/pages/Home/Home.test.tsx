@@ -1,30 +1,20 @@
 import * as React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Home from './Home';
+import type { Props } from './Home';
 
-const renderHomePage = (props = {}) => {
+const defaultProps = {};
+
+const renderHomePage = (props: Props = defaultProps) => {
   return render(<Home {...props} />);
 };
 
 describe('Component HomePage', () => {
   describe('when called', () => {
-    let docFragment: { (): DocumentFragment };
-
-    beforeEach(() => {
-      const { asFragment } = renderHomePage();
-      docFragment = asFragment;
-    });
-
-    afterEach(() => {
-      cleanup();
-    });
-
     it('renders without crashing', () => {
-      expect(docFragment()).toMatchSnapshot();
-    });
+      const { asFragment } = renderHomePage();
 
-    it('matches the snapshot', () => {
-      expect(screen).toMatchSnapshot();
+      expect(asFragment()).toMatchSnapshot();
     });
   });
 });

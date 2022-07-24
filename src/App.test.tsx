@@ -1,30 +1,20 @@
 import * as React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import App from './App';
+import type { Props } from './App';
 
-const renderApp = (props = {}) => {
+const defaultProps = {};
+
+const renderApp = (props: Props = defaultProps) => {
   return render(<App {...props} />);
 };
 
 describe('Component App', () => {
   describe('when called', () => {
-    let docFragment: { (): DocumentFragment };
-
-    beforeEach(() => {
-      const { asFragment } = renderApp();
-      docFragment = asFragment;
-    });
-
-    afterEach(() => {
-      cleanup();
-    });
-
     it('renders without crashing', () => {
-      expect(docFragment()).toMatchSnapshot();
-    });
+      const { asFragment } = renderApp();
 
-    it('matches the snapshot', () => {
-      expect(screen).toMatchSnapshot();
+      expect(asFragment()).toMatchSnapshot();
     });
   });
 });
