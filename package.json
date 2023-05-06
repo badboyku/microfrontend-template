@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/badboyku/microfrontend-template.git"
+    "url": "git+https://github.com/badboyku/microfrontend-template.git"
   },
   "main": "src/index",
   "engines": {
