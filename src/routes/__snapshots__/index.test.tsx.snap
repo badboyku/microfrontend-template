@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component Routes when called renders without crashing 1`] = `
+exports[`Component Routes renders without crashing 1`] = `
 <DocumentFragment>
   <div>
     <h1>
@@ -41,22 +41,7 @@ exports[`Component Routes when called renders without crashing 1`] = `
       </span>
     </div>
     <div>
-      PUBLIC_URL: 
-      <span
-        style="font-weight: bold;"
-      />
-    </div>
-    <h4>
-      Custom React App Env Vars
-    </h4>
-    <div>
-      Buildtime: REACT_APP_MY_ENVVAR: 
-      <span
-        style="font-weight: bold;"
-      />
-    </div>
-    <div>
-      Runtime: REACT_APP_MY_ENVVAR: 
+      REACT_APP_MY_ENVVAR: 
       <span
         style="font-weight: bold;"
       />

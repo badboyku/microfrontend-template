@@ -1,7 +1,6 @@
 ### App ####
 node_modules/
 dist/
-public/env-config.js
 .env
 
 ### CI/CD ###
@@ -15,6 +14,13 @@ public/env-config.js
 
 ### Mac ###
 .DS_Store
+
+### Sonar ###
+.scanner/
+sonar-project.properties
+
+# Temporary env files
+public/runtime-env.js
 
 ### Testing ###
 test_coverage/

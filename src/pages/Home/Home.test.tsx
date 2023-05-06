@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Home from './Home';
-import type { Props } from './Home';
 
-const defaultProps = {};
-
-const renderHomePage = (props: Props = defaultProps) => {
+const renderHomePage = (props = {}) => {
   return render(<Home {...props} />);
 };
 
 describe('Component HomePage', () => {
-  describe('when called', () => {
-    it('renders without crashing', () => {
-      const { asFragment } = renderHomePage();
+  it('renders without crashing', () => {
+    const { asFragment } = renderHomePage();
 
-      expect(asFragment()).toMatchSnapshot();
-    });
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('renders HelloWorld Component', () => {
+    renderHomePage();
+
+    expect(screen.getByText('Hello World!')).toBeInTheDocument();
   });
 });

@@ -5,7 +5,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { DefinePlugin } = require('webpack');
 const { ModuleFederationPlugin } = require('webpack').container;
 const { merge } = require('webpack-merge');
-const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const deps = require('./package.json').dependencies;
 
 module.exports = (_env, args) => {
@@ -23,7 +22,6 @@ module.exports = (_env, args) => {
       {
         IS_DEV: !isProduction,
         IS_PROD: isProduction,
-        PUBLIC_URL: process.env.PUBLIC_URL || '',
       },
     );
   const envVarsStringified = Object.keys(envVars).reduce((envVar, key) => {
@@ -68,7 +66,7 @@ module.exports = (_env, args) => {
           exclude: /node_modules/,
           options: {
             presets: [
-              [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.6.5' }],
+              [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.8.0' }],
               require.resolve('@babel/preset-react'),
               require.resolve('@babel/preset-typescript'),
             ],
@@ -133,7 +131,6 @@ module.exports = (_env, args) => {
             }
           : false,
       }),
-      new InterpolateHtmlPlugin(envVars),
       new MiniCssExtractPlugin({
         ...(isProduction ? { filename: '[name].[contenthash].css' } : {}),
       }),

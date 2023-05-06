@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import HelloWorld from './HelloWorld';
-import type { Props } from './HelloWorld';
 
-const defaultProps = {};
-
-const renderHelloWorld = (props: Props = defaultProps) => {
+const renderHelloWorld = (props = {}) => {
   return render(<HelloWorld {...props} />);
 };
 
 describe('Component HelloWorld', () => {
-  describe('when called', () => {
-    it('renders without crashing', () => {
-      const { asFragment } = renderHelloWorld();
+  it('renders without crashing', () => {
+    const { asFragment } = renderHelloWorld();
 
-      expect(asFragment()).toMatchSnapshot();
-    });
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('renders div with "Hello World!"', () => {
+    renderHelloWorld();
+
+    expect(screen.getByText('Hello World!')).toBeInTheDocument();
   });
 });
