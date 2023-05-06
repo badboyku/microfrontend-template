@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from './App';
-import type { Props } from './App';
 
-const defaultProps = {};
-
-const renderApp = (props: Props = defaultProps) => {
+const renderApp = (props = {}) => {
   return render(<App {...props} />);
 };
 
 describe('Component App', () => {
-  describe('when called', () => {
-    it('renders without crashing', () => {
-      const { asFragment } = renderApp();
+  it('renders without crashing', () => {
+    const { asFragment } = renderApp();
 
-      expect(asFragment()).toMatchSnapshot();
-    });
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('renders the default route "App" -> "Routes -> "HomePage" -> "HelloWorld"', () => {
+    renderApp();
+
+    expect(screen.getByText('Hello World!')).toBeInTheDocument();
   });
 });

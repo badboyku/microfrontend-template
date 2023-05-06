@@ -1,10 +1,15 @@
 import * as React from 'react';
-import Routes from './routes/index';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './routes/index';
 
-export type Props = {};
+type Props = {};
 
 const App: React.FC<Props> = (_props: Props) => {
-  return <Routes />;
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
 };
 
 export default App;
