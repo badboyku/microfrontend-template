@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { HelloWorld } from '../../components';
 import { getEnvVars } from '../../utils/env';
 import logoUrl, { ReactComponent as Logo } from './logo.svg';
@@ -7,7 +6,7 @@ import './styles.css';
 
 type Props = {};
 
-const Home: React.FC<Props> = (_props: Props) => {
+const Home = (_props: Props) => {
   const { REACT_APP_MY_VAR } = getEnvVars();
 
   return (

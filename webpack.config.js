@@ -66,8 +66,8 @@ module.exports = (_env, args) => {
           exclude: /node_modules/,
           options: {
             presets: [
-              [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.8.0' }],
-              require.resolve('@babel/preset-react'),
+              [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.31.0' }],
+              [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
               require.resolve('@babel/preset-typescript'),
             ],
             plugins: [[require.resolve('@babel/plugin-transform-runtime'), { corejs: 3, proposals: true }]],

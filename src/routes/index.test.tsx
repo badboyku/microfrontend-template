@@ -1,14 +1,13 @@
-import * as React from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import Routes from './index';
+import routes from './index';
 
-const renderRoutes = (props = {}) => {
-  return render(
-    <MemoryRouter>
-      <Routes {...props} />
-    </MemoryRouter>,
-  );
+jest.mock('../pages/Home', () => ({ Home: () => <div data-testid="home" /> }));
+
+const renderRoutes = (initialEntries = ['/']) => {
+  const router = createMemoryRouter(routes, { initialEntries });
+
+  return render(<RouterProvider router={router} />);
 };
 
 describe('Component Routes', () => {
@@ -21,6 +20,6 @@ describe('Component Routes', () => {
   it('renders the default route "Routes" -> "HomePage"', () => {
     renderRoutes();
 
-    expect(screen.getByText('Hello World!')).toBeInTheDocument();
+    expect(screen.getByTestId('home')).toBeInTheDocument();
   });
 });
