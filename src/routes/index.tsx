@@ -1,15 +1,16 @@
-import * as React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Outlet, RouteObject } from 'react-router-dom';
 import { Home } from '../pages';
 
-type Props = {};
-
-const AppRoutes: React.FC<Props> = (_props: Props) => {
-  return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-    </Routes>
-  );
+const Root = () => {
+  return <Outlet />;
 };
 
-export default AppRoutes;
+const routes: RouteObject[] = [
+  {
+    path: '/',
+    element: <Root />,
+    children: [{ path: '', element: <Home /> }],
+  },
+];
+
+export default routes;

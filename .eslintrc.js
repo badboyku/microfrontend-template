@@ -1,4 +1,6 @@
 module.exports = {
   extends: ['badboyku'],
-  rules: {},
+  rules: {
+    'react/react-in-jsx-scope': 'off',
+  },
 };

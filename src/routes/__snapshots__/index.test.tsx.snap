@@ -2,50 +2,8 @@
 
 exports[`Component Routes renders without crashing 1`] = `
 <DocumentFragment>
-  <div>
-    <h1>
-      Home
-    </h1>
-    <div
-      class="hello-world"
-    >
-      Hello World!
-    </div>
-    <img
-      alt="logo"
-      class="logo"
-      src="logo.svg"
-    />
-    <svg
-      width="40"
-    >
-      logo.svg
-    </svg>
-    <h3>
-      Env Vars
-    </h3>
-    <div>
-      IS_DEV: 
-      <span
-        style="font-weight: bold;"
-      >
-        false
-      </span>
-    </div>
-    <div>
-      IS_PROD: 
-      <span
-        style="font-weight: bold;"
-      >
-        true
-      </span>
-    </div>
-    <div>
-      REACT_APP_MY_ENVVAR: 
-      <span
-        style="font-weight: bold;"
-      />
-    </div>
-  </div>
+  <div
+    data-testid="home"
+  />
 </DocumentFragment>
 `;
