@@ -1,6 +1,7 @@
-import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import Home from './Home';
+
+jest.mock('../../components/HelloWorld', () => ({ HelloWorld: () => <div data-testid="helloWorld" /> }));
 
 const renderHomePage = (props = {}) => {
   return render(<Home {...props} />);
@@ -13,9 +14,15 @@ describe('Component HomePage', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
+  it('renders header Home', () => {
+    renderHomePage();
+
+    expect(screen.getByText('Home')).toBeInTheDocument();
+  });
+
   it('renders HelloWorld Component', () => {
     renderHomePage();
 
-    expect(screen.getByText('Hello World!')).toBeInTheDocument();
+    expect(screen.getByTestId('helloWorld')).toBeInTheDocument();
   });
 });
