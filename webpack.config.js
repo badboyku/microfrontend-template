@@ -66,7 +66,7 @@ module.exports = (_env, args) => {
           exclude: /node_modules/,
           options: {
             presets: [
-              [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.31.1' }],
+              [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.33.2' }],
               [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
               require.resolve('@babel/preset-typescript'),
             ],
@@ -146,7 +146,10 @@ module.exports = (_env, args) => {
       open: true,
       port: process.env.PORT || 8080,
     },
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
+    output: {
+      devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]', // map to source with absolute file path not webpack:// protocol
+    },
   };
 
   const productionConfig = {
@@ -154,6 +157,7 @@ module.exports = (_env, args) => {
       minimize: true,
       minimizer: [new CssMinimizerPlugin()],
     },
+    devtool: 'source-map',
   };
 
   return isProduction ? merge([commonConfig, productionConfig]) : merge([commonConfig, developmentConfig]);
