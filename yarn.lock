@@ -2207,7 +2207,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@^7.3.1":
+"@typescript-eslint/eslint-plugin@^7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-7.4.0.tgz#de61c3083842fc6ac889d2fc83c9a96b55ab8328"
   integrity sha512-yHMQ/oFaM7HZdVrVm/M2WHaNPgyuJH4WelkSVEWSSsir34kxW2kDJCxlXRhhGWEsMN0WAW/vLpKfKVcm8k+MPw==
@@ -2224,7 +2224,7 @@
     semver "^7.5.4"
     ts-api-utils "^1.0.1"
 
-"@typescript-eslint/parser@^7.3.1":
+"@typescript-eslint/parser@^7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-7.4.0.tgz#540f4321de1e52b886c0fa68628af1459954c1f1"
   integrity sha512-ZvKHxHLusweEUVwrGRXXUVzFgnWhigo4JurEj0dGF1tbcGh6buL+ejDdjxOQxv6ytcY1uhun1p2sm8iWStlgLQ==
@@ -4176,13 +4176,13 @@ eslint-config-airbnb@^19.0.4:
     object.assign "^4.1.2"
     object.entries "^1.1.5"
 
-eslint-config-badboyku@^1.0.32:
-  version "1.0.32"
-  resolved "https://registry.yarnpkg.com/eslint-config-badboyku/-/eslint-config-badboyku-1.0.32.tgz#b7a66d9ce8f8e52df43216760cba526f333477f1"
-  integrity sha512-tKRWg2fD2OJJ3P1Q4kMB9DlbZQPO2dxTyo/OM1gj4UBSYm5P009oX9z+u7zL4jZJiDS1ROGIHB5oDf0FMmCY8w==
+eslint-config-badboyku@^1.0.33:
+  version "1.0.33"
+  resolved "https://registry.yarnpkg.com/eslint-config-badboyku/-/eslint-config-badboyku-1.0.33.tgz#993f7ea49a6d5dac46c7b8c056d3b6a744dc5549"
+  integrity sha512-M1A7vB7HgcOaibgpkAY1h1d1V6lQXjX+RfQwUbtsZCT3TWfrkNq6ZoT0mD/lqpB7T1mL2GZHiyxv5des4sCRuA==
   dependencies:
-    "@typescript-eslint/eslint-plugin" "^7.3.1"
-    "@typescript-eslint/parser" "^7.3.1"
+    "@typescript-eslint/eslint-plugin" "^7.4.0"
+    "@typescript-eslint/parser" "^7.4.0"
     eslint "^8.57.0"
     eslint-config-airbnb "^19.0.4"
     eslint-config-prettier "^9.1.0"

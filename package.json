@@ -16,6 +16,7 @@
   "scripts": {
     "prepare": "husky",
     "start": "NODE_ENV=development runtime-env-cra --config-name=./public/runtime-env.js && webpack-cli serve",
+    "start:dist": "http-server ./dist",
     "build": "webpack --mode production",
     "clean": "rimraf ./dist",
     "clean:modules": "rimraf ./node_modules",
@@ -81,7 +82,7 @@
     "css-loader": "^6.10.0",
     "css-minimizer-webpack-plugin": "^6.0.0",
     "dotenv": "^16.4.5",
-    "eslint-config-badboyku": "^1.0.32",
+    "eslint-config-badboyku": "^1.0.33",
     "eslint-import-resolver-alias": "^1.1.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.0",
