@@ -1,11 +1,20 @@
 require('dotenv').config();
+const { createHash } = require('crypto');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const { ModuleFederationPlugin } = require('webpack').container;
-const { merge } = require('webpack-merge');
+const { alias, coreJsVersion } = require('./app.config');
 const deps = require('./package.json').dependencies;
+
+const getCacheVersion = (rawEnvVars) => {
+  const hash = createHash('md5');
+  hash.update(JSON.stringify(rawEnvVars));
+
+  return hash.digest('hex');
+};
 
 module.exports = (_env, args) => {
   const mode = args.mode || 'development';
@@ -30,79 +39,128 @@ module.exports = (_env, args) => {
     return envVar;
   }, {});
 
-  const commonConfig = {
-    mode,
-    cache: false,
+  return {
     entry: './src/index',
+    mode,
     output: {
+      pathinfo: !isProduction,
       publicPath: 'auto',
       ...(isProduction
         ? {
-            assetModuleFilename: '[name].[contenthash][ext][query]',
-            chunkFilename: '[name].[contenthash].js',
             filename: '[name].[contenthash].js',
+            chunkFilename: '[name].[contenthash].chunk.js',
+            assetModuleFilename: '[name].[contenthash][ext]',
           }
-        : {}),
+        : {
+            // map to source with absolute file path not webpack:// protocol
+            devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]',
+          }),
     },
-    resolve: { extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'] },
     module: {
       rules: [
         {
-          test: /bootstrap\.(jsx|tsx)$/,
-          loader: require.resolve('bundle-loader'),
-          options: { lazy: true },
+          oneOf: [
+            { test: /\.(jpg|jpeg|png|gif|bmp)$/, type: 'asset' },
+            {
+              test: /\.svg$/,
+              use: [
+                {
+                  loader: require.resolve('@svgr/webpack'),
+                  options: {
+                    svgoConfig: {
+                      plugins: [
+                        { name: 'preset-default', params: { overrides: { removeViewBox: false, removeTitle: false } } },
+                      ],
+                    },
+                    svgProps: { role: 'img' },
+                    titleProp: true,
+                    ref: true,
+                  },
+                },
+                {
+                  loader: require.resolve('file-loader'),
+                  options: { name: isProduction ? '[name].[contenthash].[ext]' : '[path][name].[ext]' },
+                },
+              ],
+              issuer: { and: [/\.(js|jsx|ts|tsx|md|mdx)$/] },
+            },
+            {
+              test: /\.(js|jsx|ts|tsx|mjs)$/,
+              loader: require.resolve('babel-loader'),
+              exclude: /node_modules/,
+              options: {
+                presets: [
+                  [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: coreJsVersion }],
+                  [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
+                  require.resolve('@babel/preset-typescript'),
+                ],
+                plugins: [
+                  [require.resolve('babel-plugin-module-resolver'), { root: ['./src'], alias }],
+                  [require.resolve('@babel/plugin-transform-runtime'), { corejs: 3 }],
+                ],
+                cacheCompression: false,
+                cacheDirectory: true,
+                compact: isProduction,
+              },
+            },
+            {
+              test: /\.css$/,
+              use: [
+                !isProduction && require.resolve('style-loader'),
+                isProduction && { loader: MiniCssExtractPlugin.loader },
+                { loader: require.resolve('css-loader'), options: { importLoaders: 1, sourceMap: !isProduction } },
+                {
+                  loader: require.resolve('postcss-loader'),
+                  options: {
+                    postcssOptions: {
+                      plugins: [require.resolve('postcss-preset-env'), require.resolve('postcss-normalize')],
+                    },
+                    sourceMap: !isProduction,
+                  },
+                },
+              ].filter(Boolean),
+              sideEffects: true,
+            },
+            {
+              test: /\.(sass|scss)$/,
+              use: [
+                !isProduction && require.resolve('style-loader'),
+                isProduction && { loader: MiniCssExtractPlugin.loader },
+                { loader: require.resolve('css-loader'), options: { importLoaders: 3, sourceMap: !isProduction } },
+                {
+                  loader: require.resolve('postcss-loader'),
+                  options: {
+                    postcssOptions: {
+                      plugins: [require.resolve('postcss-preset-env'), require.resolve('postcss-normalize')],
+                    },
+                    sourceMap: !isProduction,
+                  },
+                },
+                { loader: require.resolve('resolve-url-loader'), options: { sourceMap: !isProduction } },
+                { loader: require.resolve('sass-loader'), options: { sourceMap: true } },
+              ].filter(Boolean),
+              sideEffects: true,
+            },
+            {
+              exclude: [/^$/, /\.(js|jsx|ts|tsx|mjs)$/, /\.html$/, /\.json$/],
+              type: 'asset/resource',
+            },
+          ],
         },
-        {
-          test: /\.(bmp|gif|jpg|jpeg|png)$/,
-          loader: require.resolve('url-loader'),
-        },
-        {
-          test: /\.svg$/,
-          use: [require.resolve('@svgr/webpack'), require.resolve('url-loader')],
-        },
-        {
-          test: /\.(js|mjs|jsx|ts|tsx)$/,
-          loader: require.resolve('babel-loader'),
-          exclude: /node_modules/,
-          options: {
-            presets: [
-              [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.36.1' }],
-              [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
-              require.resolve('@babel/preset-typescript'),
-            ],
-            plugins: [[require.resolve('@babel/plugin-transform-runtime'), { corejs: 3, proposals: true }]],
+      ],
+    },
+    resolve: { alias, extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'] },
+    optimization: {
+      minimize: isProduction,
+      minimizer: [
+        new TerserPlugin({
+          extractComments: false,
+          terserOptions: {
+            format: { ascii_only: true, comments: false },
+            mangle: { safari10: true },
           },
-        },
-        {
-          test: /\.css$/,
-          use: [
-            { loader: MiniCssExtractPlugin.loader },
-            { loader: require.resolve('css-loader'), options: { importLoaders: 1, sourceMap: !isProduction } },
-            {
-              loader: require.resolve('postcss-loader'),
-              options: {
-                postcssOptions: { plugins: [require.resolve('postcss-preset-env')] },
-                sourceMap: !isProduction,
-              },
-            },
-          ],
-        },
-        {
-          test: /\.(sass|scss)$/,
-          use: [
-            { loader: MiniCssExtractPlugin.loader },
-            { loader: require.resolve('css-loader'), options: { importLoaders: 3, sourceMap: !isProduction } },
-            {
-              loader: require.resolve('postcss-loader'),
-              options: {
-                postcssOptions: { plugins: [require.resolve('postcss-preset-env')] },
-                sourceMap: !isProduction,
-              },
-            },
-            { loader: require.resolve('resolve-url-loader'), options: { sourceMap: !isProduction } },
-            { loader: require.resolve('sass-loader'), options: { sourceMap: true } },
-          ],
-        },
+        }),
+        new CssMinimizerPlugin(),
       ],
     },
     plugins: [
@@ -131,34 +189,31 @@ module.exports = (_env, args) => {
             }
           : false,
       }),
-      new MiniCssExtractPlugin({
-        ...(isProduction ? { filename: '[name].[contenthash].css' } : {}),
-      }),
-    ],
-  };
-
-  const developmentConfig = {
-    devServer: {
-      client: { logging: 'info', progress: true },
-      compress: true,
-      historyApiFallback: true,
-      hot: true,
-      open: true,
-      port: process.env.PORT || 8080,
+      isProduction &&
+        new MiniCssExtractPlugin({
+          filename: '[name].[contenthash].css',
+          chunkFilename: '[name].[contenthash].chunk.css',
+        }),
+    ].filter(Boolean),
+    cache: {
+      type: 'filesystem',
+      buildDependencies: { defaultWebpack: ['webpack/lib/'], config: [__filename] },
+      version: getCacheVersion(envVars),
     },
-    devtool: 'inline-source-map',
-    output: {
-      devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]', // map to source with absolute file path not webpack:// protocol
-    },
+    target: ['browserslist'],
+    bail: isProduction,
+    devtool: isProduction ? 'source-map' : 'inline-source-map',
+    ...(isProduction
+      ? {}
+      : {
+          devServer: {
+            client: { logging: 'info', progress: true },
+            compress: true,
+            historyApiFallback: true,
+            hot: true,
+            open: true,
+            port: process.env.PORT || 8080,
+          },
+        }),
   };
-
-  const productionConfig = {
-    optimization: {
-      minimize: true,
-      minimizer: [new CssMinimizerPlugin()],
-    },
-    devtool: 'source-map',
-  };
-
-  return isProduction ? merge([commonConfig, productionConfig]) : merge([commonConfig, developmentConfig]);
 };
