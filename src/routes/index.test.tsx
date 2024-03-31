@@ -2,7 +2,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import routes from './index';
 
-jest.mock('../pages/Home', () => ({ Home: () => <div data-testid="home" /> }));
+jest.mock('pages/Home', () => () => <div data-testid="home" />);
 
 const renderRoutes = (initialEntries = ['/']) => {
   const router = createMemoryRouter(routes, { initialEntries });

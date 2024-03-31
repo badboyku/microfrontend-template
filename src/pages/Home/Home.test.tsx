@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Home from './Home';
 
-jest.mock('../../components/HelloWorld', () => ({ HelloWorld: () => <div data-testid="helloWorld" /> }));
+jest.mock('components/HelloWorld', () => () => <div data-testid="helloWorld" />);
 
 const renderHomePage = (props = {}) => {
   return render(<Home {...props} />);

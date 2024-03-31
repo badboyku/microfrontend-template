@@ -1,16 +1,18 @@
 /* istanbul ignore file */
-import type { ReactAppEnvVars } from '../@types/global';
+import type { ReactAppEnvVars } from 'types/app';
 
-export const DefaultEnvVars: ReactAppEnvVars = {
+const defaultEnvVars: ReactAppEnvVars = {
   REACT_APP_MY_VAR: '',
 };
 
-export const getEnvVars = (): ReactAppEnvVars => {
-  const { __RUNTIME_CONFIG__: env = DefaultEnvVars } = window;
+const getEnvVars = (): ReactAppEnvVars => {
+  const { __RUNTIME_CONFIG__: env = defaultEnvVars } = window;
 
-  return { ...DefaultEnvVars, ...env };
+  return { ...defaultEnvVars, ...env };
 };
 
-export const setEnvVars = (newEnvVars: ReactAppEnvVars): void => {
-  window.__RUNTIME_CONFIG__ = { ...DefaultEnvVars, ...newEnvVars };
+const setEnvVars = (newEnvVars: ReactAppEnvVars): void => {
+  window.__RUNTIME_CONFIG__ = { ...defaultEnvVars, ...newEnvVars };
 };
+
+export default { getEnvVars, setEnvVars };

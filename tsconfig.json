@@ -12,6 +12,13 @@
     "moduleResolution": "node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "components/*": ["./src/components/*"],
+      "pages/*": ["./src/pages/*"],
+      "routes/*": ["./src/routes/*"],
+      "types/*": ["./src/@types/*"],
+      "utils/*": ["./src/utils/*"]
+    },
     "removeComments": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,

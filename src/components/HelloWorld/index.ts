@@ -1,2 +1,4 @@
 /* istanbul ignore file */
-export { default as HelloWorld } from './HelloWorld';
+import HelloWorld from './HelloWorld';
+
+export default HelloWorld;

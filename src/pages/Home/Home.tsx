@@ -1,5 +1,5 @@
-import { HelloWorld } from '../../components';
-import { getEnvVars } from '../../utils/env';
+import HelloWorld from 'components/HelloWorld';
+import env from 'utils/env';
 import logoUrl, { ReactComponent as Logo } from './logo.svg';
 import './style.scss';
 import './styles.css';
@@ -7,7 +7,7 @@ import './styles.css';
 type Props = {};
 
 const Home = (_props: Props) => {
-  const { REACT_APP_MY_VAR } = getEnvVars();
+  const { REACT_APP_MY_VAR } = env.getEnvVars();
 
   return (
     <div>
