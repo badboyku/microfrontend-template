@@ -209,6 +209,12 @@ module.exports = (_env, args) => {
           devServer: {
             client: { logging: 'info', progress: true },
             compress: true,
+            devMiddleware: { publicPath: '/' },
+            headers: {
+              'Access-Control-Allow-Headers': '*',
+              'Access-Control-Allow-Methods': '*',
+              'Access-Control-Allow-Origin': '*',
+            },
             historyApiFallback: true,
             hot: true,
             open: true,
