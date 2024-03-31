@@ -20,9 +20,7 @@ NOTE: App will be served from webpack-dev-server's default port 8080, which can 
 ---
 
 ## Module Federation Plugin
-This plugin is used to help bundle multiple builds into one build. There is a `bootstrap.tsx` file that is necessary for the plugin to work correctly.
-
-**WARNING: Do not remove file `bootstrap.tsx`**
+This plugin is used to help bundle multiple builds into one build.
 
 There are some options that need to be set in `webpack.config.js` file:
 
