@@ -259,7 +259,7 @@ module.exports = (_env, args) => {
     },
     target: ['browserslist'],
     bail: isProduction,
-    // eslint-disable-next-line no-nested-ternary
+    /* eslint-disable-next-line no-nested-ternary */
     devtool: disableSourceMap ? false : isProduction ? 'source-map' : 'inline-source-map',
     ...(isProduction
       ? {}
