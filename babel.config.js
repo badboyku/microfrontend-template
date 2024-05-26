@@ -10,8 +10,8 @@ module.exports = (api) => {
       '@babel/preset-typescript',
     ],
     plugins: [
-      ['module-resolver', { root: ['./src'], alias }],
       ['@babel/plugin-transform-runtime', { corejs: 3 }],
+      ['module-resolver', { root: ['./src'], alias }],
     ],
   };
 };

@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import type { ReactAppEnvVars } from 'types/app';
+import type { ReactAppEnvVars } from 'types';
 
 const defaultEnvVars: ReactAppEnvVars = {
   REACT_APP_MY_VAR: '',

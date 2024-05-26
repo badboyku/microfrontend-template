@@ -16,7 +16,7 @@
       "components/*": ["./src/components/*"],
       "pages/*": ["./src/pages/*"],
       "routes/*": ["./src/routes/*"],
-      "types/*": ["./src/@types/*"],
+      "types": ["./src/@types/global.d.ts"],
       "utils/*": ["./src/utils/*"]
     },
     "removeComments": true,

@@ -3,8 +3,8 @@ module.exports = {
     components: './src/components/',
     pages: './src/pages/',
     routes: './src/routes/',
-    types: './src/@types/',
+    types: './src/@types/global.d.ts',
     utils: './src/utils/',
   },
-  coreJsVersion: '3.36.1',
+  coreJsVersion: '3.37.1',
 };
