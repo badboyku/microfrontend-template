@@ -1,11 +1,14 @@
 const path = require('path');
+/* eslint-disable-next-line import/no-extraneous-dependencies */
+const camelcase = require('camelcase');
 
 module.exports = {
   process(_src, filename, _config, _options) {
     const assetFilename = JSON.stringify(path.basename(filename));
 
     if (filename.match(/\.svg$/)) {
-      const componentName = `Svg${path.parse(filename).name.toLowerCase()}`;
+      const pascalCaseFilename = camelcase(path.parse(filename).name, { pascalCase: true });
+      const componentName = `Svg${pascalCaseFilename}`;
 
       return {
         code: `

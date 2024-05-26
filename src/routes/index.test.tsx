@@ -1,5 +1,5 @@
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import routes from './index';
 
 jest.mock('pages/Home', () => () => <div data-testid="home" />);

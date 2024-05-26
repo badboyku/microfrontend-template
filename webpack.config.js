@@ -1,11 +1,14 @@
 require('dotenv').config();
 const { createHash } = require('crypto');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const { ModuleFederationPlugin } = require('webpack').container;
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { alias, coreJsVersion } = require('./app.config');
 const deps = require('./package.json').dependencies;
 
@@ -20,7 +23,7 @@ module.exports = (_env, args) => {
   const mode = args.mode || 'development';
   const isProduction = mode === 'production';
 
-  const envVars = Object.keys(process.env)
+  const reactAppEnvVars = Object.keys(process.env)
     .filter((key) => /^REACT_APP_/i.test(key))
     .reduce(
       (env, key) => {
@@ -33,11 +36,16 @@ module.exports = (_env, args) => {
         IS_PROD: isProduction,
       },
     );
-  const envVarsStringified = Object.keys(envVars).reduce((envVar, key) => {
-    envVar[key] = JSON.stringify(envVars[key]);
+  const reactAppEnvVarsStringified = Object.keys(reactAppEnvVars).reduce((envVar, key) => {
+    envVar[key] = JSON.stringify(reactAppEnvVars[key]);
 
     return envVar;
   }, {});
+
+  const assetInjectMaxSize = parseInt(process.env.ASSET_INJECT_MAX_SIZE, 10) || 10000;
+  const disableEslint = (process.env.DISABLE_ESLINT || 'false').toLowerCase() === 'true';
+  const disableReactRefresh = (process.env.DISABLE_REACT_REFRESH || 'false').toLowerCase() === 'true';
+  const disableSourceMap = (process.env.DISABLE_SOURCE_MAP || 'false').toLowerCase() === 'true';
 
   return {
     entry: './src/index',
@@ -45,12 +53,12 @@ module.exports = (_env, args) => {
     output: {
       pathinfo: !isProduction,
       publicPath: 'auto',
+      hashDigestLength: 16,
+      filename: 'js/[name].[contenthash].js',
+      chunkFilename: 'js/[name].[contenthash].chunk.js',
+      assetModuleFilename: 'js/[name].[contenthash][ext]',
       ...(isProduction
-        ? {
-            filename: '[name].[contenthash].js',
-            chunkFilename: '[name].[contenthash].chunk.js',
-            assetModuleFilename: '[name].[contenthash][ext]',
-          }
+        ? {}
         : {
             // map to source with absolute file path not webpack:// protocol
             devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]',
@@ -58,9 +66,19 @@ module.exports = (_env, args) => {
     },
     module: {
       rules: [
+        !disableSourceMap && {
+          enforce: 'pre',
+          exclude: /@babel(?:\/|\\{1,2})runtime/,
+          test: /\.(js|mjs|jsx|ts|tsx|css)$/,
+          loader: require.resolve('source-map-loader'),
+        },
         {
           oneOf: [
-            { test: /\.(jpg|jpeg|png|gif|bmp)$/, type: 'asset' },
+            {
+              test: /\.(jpg|jpeg|png|gif|bmp)$/,
+              type: 'asset',
+              parser: { dataUrlCondition: { maxSize: assetInjectMaxSize } },
+            },
             {
               test: /\.svg$/,
               use: [
@@ -79,7 +97,7 @@ module.exports = (_env, args) => {
                 },
                 {
                   loader: require.resolve('file-loader'),
-                  options: { name: isProduction ? '[name].[contenthash].[ext]' : '[path][name].[ext]' },
+                  options: { name: 'media/[name].[contenthash:16].[ext]' },
                 },
               ],
               issuer: { and: [/\.(js|jsx|ts|tsx|md|mdx)$/] },
@@ -97,25 +115,47 @@ module.exports = (_env, args) => {
                 plugins: [
                   [require.resolve('babel-plugin-module-resolver'), { root: ['./src'], alias }],
                   [require.resolve('@babel/plugin-transform-runtime'), { corejs: 3 }],
-                ],
+                  !isProduction && !disableReactRefresh && require.resolve('react-refresh/babel'),
+                ].filter(Boolean),
                 cacheCompression: false,
                 cacheDirectory: true,
                 compact: isProduction,
               },
             },
             {
+              test: /\.(js|mjs)$/,
+              exclude: /@babel(?:\/|\\{1,2})runtime/,
+              loader: require.resolve('babel-loader'),
+              options: {
+                babelrc: false,
+                configFile: false,
+                compact: false,
+                cacheDirectory: true,
+                cacheCompression: false,
+                sourceMaps: !disableSourceMap,
+                inputSourceMap: !disableSourceMap,
+              },
+            },
+            {
               test: /\.css$/,
               use: [
                 !isProduction && require.resolve('style-loader'),
-                isProduction && { loader: MiniCssExtractPlugin.loader },
-                { loader: require.resolve('css-loader'), options: { importLoaders: 1, sourceMap: !isProduction } },
+                isProduction && { loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } },
+                {
+                  loader: require.resolve('css-loader'),
+                  options: { importLoaders: 1, sourceMap: !disableSourceMap },
+                },
                 {
                   loader: require.resolve('postcss-loader'),
                   options: {
                     postcssOptions: {
-                      plugins: [require.resolve('postcss-preset-env'), require.resolve('postcss-normalize')],
+                      plugins: [
+                        require.resolve('postcss-flexbugs-fixes'),
+                        require.resolve('postcss-preset-env'),
+                        require.resolve('postcss-normalize'),
+                      ],
                     },
-                    sourceMap: !isProduction,
+                    sourceMap: !disableSourceMap,
                   },
                 },
               ].filter(Boolean),
@@ -126,18 +166,25 @@ module.exports = (_env, args) => {
               use: [
                 !isProduction && require.resolve('style-loader'),
                 isProduction && { loader: MiniCssExtractPlugin.loader },
-                { loader: require.resolve('css-loader'), options: { importLoaders: 3, sourceMap: !isProduction } },
+                {
+                  loader: require.resolve('css-loader'),
+                  options: { importLoaders: 3, sourceMap: !disableSourceMap },
+                },
                 {
                   loader: require.resolve('postcss-loader'),
                   options: {
                     postcssOptions: {
-                      plugins: [require.resolve('postcss-preset-env'), require.resolve('postcss-normalize')],
+                      plugins: [
+                        require.resolve('postcss-flexbugs-fixes'),
+                        require.resolve('postcss-preset-env'),
+                        require.resolve('postcss-normalize'),
+                      ],
                     },
-                    sourceMap: !isProduction,
+                    sourceMap: !disableSourceMap,
                   },
                 },
-                { loader: require.resolve('resolve-url-loader'), options: { sourceMap: !isProduction } },
-                { loader: require.resolve('sass-loader'), options: { sourceMap: true } },
+                { loader: require.resolve('resolve-url-loader'), options: { sourceMap: !disableSourceMap } },
+                { loader: require.resolve('sass-loader'), options: { sourceMap: !disableSourceMap } },
               ].filter(Boolean),
               sideEffects: true,
             },
@@ -147,7 +194,7 @@ module.exports = (_env, args) => {
             },
           ],
         },
-      ],
+      ].filter(Boolean),
     },
     resolve: { alias, extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'] },
     optimization: {
@@ -164,7 +211,7 @@ module.exports = (_env, args) => {
       ],
     },
     plugins: [
-      new DefinePlugin(envVarsStringified),
+      new DefinePlugin(reactAppEnvVarsStringified),
       new ModuleFederationPlugin({
         name: 'my_app',
         filename: 'remoteEntry.js',
@@ -191,18 +238,29 @@ module.exports = (_env, args) => {
       }),
       isProduction &&
         new MiniCssExtractPlugin({
-          filename: '[name].[contenthash].css',
-          chunkFilename: '[name].[contenthash].chunk.css',
+          filename: 'css/[name].[contenthash].css',
+          chunkFilename: 'css/[name].[contenthash].chunk.css',
+        }),
+      new WebpackManifestPlugin({}),
+      !isProduction && !disableReactRefresh && new ReactRefreshWebpackPlugin({ overlay: false }),
+      !disableEslint &&
+        new ESLintPlugin({
+          extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+          context: 'src',
+          files: ['src'],
+          cache: true,
         }),
     ].filter(Boolean),
     cache: {
-      type: 'filesystem',
       buildDependencies: { defaultWebpack: ['webpack/lib/'], config: [__filename] },
-      version: getCacheVersion(envVars),
+      store: 'pack',
+      type: 'filesystem',
+      version: getCacheVersion(reactAppEnvVars),
     },
     target: ['browserslist'],
     bail: isProduction,
-    devtool: isProduction ? 'source-map' : 'inline-source-map',
+    /* eslint-disable-next-line no-nested-ternary */
+    devtool: disableSourceMap ? false : isProduction ? 'source-map' : 'inline-source-map',
     ...(isProduction
       ? {}
       : {
