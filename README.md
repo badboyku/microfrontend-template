@@ -47,7 +47,7 @@ There are some options that need to be set in `webpack.config.js` file:
    ```js
    exposes: {
      './ThisComponent': './src/components/ThisComponent',
-     './ThatComponent': './src/components/ThisComponent',
+     './ThatComponent': './src/components/ThatComponent',
    }
    ```
 
