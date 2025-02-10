@@ -1,16 +1,14 @@
-import { Outlet, RouteObject } from 'react-router-dom';
+import AppError from 'components/AppError';
+import AppRoot from 'components/AppRoot';
 import Home from 'pages/Home';
+import type { RouteObject } from 'react-router-dom';
 
-const Root = () => {
-  return <Outlet />;
+type Props = {};
+
+const getRoutes = (_props: Props = {}): RouteObject[] => {
+  return [
+    { path: '/', element: <AppRoot />, errorElement: <AppError />, children: [{ index: true, element: <Home /> }] },
+  ];
 };
 
-const routes: RouteObject[] = [
-  {
-    path: '/',
-    element: <Root />,
-    children: [{ path: '', element: <Home /> }],
-  },
-];
-
-export default routes;
+export default getRoutes();

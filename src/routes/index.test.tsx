@@ -10,7 +10,7 @@ const renderRoutes = (initialEntries = ['/']) => {
   return render(<RouterProvider router={router} />);
 };
 
-describe('Component Routes', () => {
+describe('Routes', () => {
   it('renders without crashing', () => {
     const { asFragment } = renderRoutes();
 
