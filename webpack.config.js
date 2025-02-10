@@ -1,5 +1,7 @@
 require('dotenv').config();
 const { createHash } = require('crypto');
+const fs = require('fs');
+const path = require('path');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
@@ -9,8 +11,24 @@ const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const { ModuleFederationPlugin } = require('webpack').container;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-const { alias, coreJsVersion } = require('./app.config');
 const deps = require('./package.json').dependencies;
+
+const assetInjectMaxSize = parseInt(process.env.ASSET_INJECT_MAX_SIZE, 10) || 10000;
+const disableEslint = (process.env.DISABLE_ESLINT || 'false').toLowerCase() === 'true';
+const disableReactRefresh = (process.env.DISABLE_REACT_REFRESH || 'false').toLowerCase() === 'true';
+const disableSourceMap = (process.env.DISABLE_SOURCE_MAP || 'false').toLowerCase() === 'true';
+
+const alias = {
+  components: './src/components/',
+  pages: './src/pages/',
+  routes: './src/routes/',
+  types: './src/@types/global.d.ts',
+  utils: './src/utils/',
+};
+
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
+const appSrc = resolveApp('src');
 
 const getCacheVersion = (rawEnvVars) => {
   const hash = createHash('md5');
@@ -41,11 +59,6 @@ module.exports = (_env, args) => {
 
     return envVar;
   }, {});
-
-  const assetInjectMaxSize = parseInt(process.env.ASSET_INJECT_MAX_SIZE, 10) || 10000;
-  const disableEslint = (process.env.DISABLE_ESLINT || 'false').toLowerCase() === 'true';
-  const disableReactRefresh = (process.env.DISABLE_REACT_REFRESH || 'false').toLowerCase() === 'true';
-  const disableSourceMap = (process.env.DISABLE_SOURCE_MAP || 'false').toLowerCase() === 'true';
 
   return {
     entry: './src/index',
@@ -108,7 +121,7 @@ module.exports = (_env, args) => {
               exclude: /node_modules/,
               options: {
                 presets: [
-                  [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: coreJsVersion }],
+                  [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.38.1' }],
                   [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
                   require.resolve('@babel/preset-typescript'),
                 ],
@@ -202,10 +215,7 @@ module.exports = (_env, args) => {
       minimizer: [
         new TerserPlugin({
           extractComments: false,
-          terserOptions: {
-            format: { ascii_only: true, comments: false },
-            mangle: { safari10: true },
-          },
+          terserOptions: { format: { ascii_only: true, comments: false }, mangle: { safari10: true } },
         }),
         new CssMinimizerPlugin(),
       ],
@@ -223,17 +233,17 @@ module.exports = (_env, args) => {
         template: './public/index.html',
         minify: isProduction
           ? {
-              collapseWhitespace: true,
-              keepClosingSlash: true,
-              minifyCSS: true,
-              minifyJS: true,
-              minifyURLs: true,
-              removeComments: true,
-              removeEmptyAttributes: true,
-              removeRedundantAttributes: true,
-              removeStyleLinkTypeAttributes: true,
-              useShortDoctype: true,
-            }
+            collapseWhitespace: true,
+            keepClosingSlash: true,
+            minifyCSS: true,
+            minifyJS: true,
+            minifyURLs: true,
+            removeComments: true,
+            removeEmptyAttributes: true,
+            removeRedundantAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            useShortDoctype: true,
+          }
           : false,
       }),
       isProduction &&
@@ -244,12 +254,7 @@ module.exports = (_env, args) => {
       new WebpackManifestPlugin({}),
       !isProduction && !disableReactRefresh && new ReactRefreshWebpackPlugin({ overlay: false }),
       !disableEslint &&
-        new ESLintPlugin({
-          extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
-          context: 'src',
-          files: ['src'],
-          cache: true,
-        }),
+        new ESLintPlugin({ extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'], context: appSrc, files: [appSrc] }),
     ].filter(Boolean),
     cache: {
       buildDependencies: { defaultWebpack: ['webpack/lib/'], config: [__filename] },

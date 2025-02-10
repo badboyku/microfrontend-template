@@ -1,11 +1,15 @@
-const { alias } = require('./app.config');
-
 module.exports = {
   extends: ['badboyku'],
   settings: {
     'import/resolver': {
       alias: {
-        map: Object.keys(alias).map((key) => [key, alias[key]]),
+        map: [
+          ['components', './src/components/'],
+          ['pages', './src/pages/'],
+          ['routes', './src/routes/'],
+          ['types', './src/@types/global.d.ts'],
+          ['utils', './src/utils/'],
+        ],
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       },
     },
