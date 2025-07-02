@@ -1,0 +1,113 @@
+.settings-button {
+  background: none;
+  border: none;
+  float: right;
+  position: absolute;
+  outline: 0;
+  top: 0;
+  right: 0;
+  height: 16px;
+  width: 16px;
+  z-index: 5000;
+}
+
+.settings-container {
+  background-color: rgba(15, 15, 15, 0.3);
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+}
+
+.settings-modal {
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    whitesmoke 1px 2px,
+    white 1px 1px;
+  border-radius: 10px;
+  padding: 10px 15px;
+  width: 50vw;
+  min-width: 485px;
+}
+
+/* Header */
+.settings-modal-header-row {
+  display: flex;
+  flex-direction: row;
+}
+.settings-modal-header {
+  width: 100%;
+}
+.settings-modal-title {
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+}
+.settings-modal-header-close {
+  transform: translate(10px, -15px);
+}
+.settings-modal-header-close-button {
+  color: grey;
+  cursor: pointer;
+  font-size: 40px;
+  font-weight: bold;
+}
+.settings-modal-header-close-button:hover {
+  color: black;
+}
+
+/* Form */
+.settings-form-field-row {
+  display: flex;
+  align-items: baseline;
+  padding-bottom: 5px;
+}
+.settings-form-field-label {
+  color: black;
+  cursor: pointer;
+  font-size: 14px;
+  padding-right: 5px;
+  width: 132px;
+  min-width: 132px;
+  max-width: 132px;
+  white-space: nowrap;
+}
+.settings-form-field-input {
+  width: 100%;
+}
+.settings-form-field-input-box {
+  background-color: white;
+  border: 1px solid grey;
+  color: black;
+  font-size: 14px;
+  width: 98%;
+  padding: 4px;
+}
+.settings-form-field-help {
+  font-size: 12px;
+}
+.settings-form-button-row {
+  display: flex;
+  gap: 10px;
+  margin-left: 135px;
+  margin-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.settings-form-button {
+  background-color: #efefef;
+  border: 1px solid grey;
+  border-radius: 5px;
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 2px 10px;
+}
+.settings-form-button:hover {
+  background-color: #dedede;
+}

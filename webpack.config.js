@@ -52,6 +52,7 @@ module.exports = (_env, args) => {
       {
         IS_DEV: !isProduction,
         IS_PROD: isProduction,
+        SETTINGS_CODE: 'asdfasdf',
       },
     );
   const reactAppEnvVarsStringified = Object.keys(reactAppEnvVars).reduce((envVar, key) => {
@@ -121,7 +122,7 @@ module.exports = (_env, args) => {
               exclude: /node_modules/,
               options: {
                 presets: [
-                  [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.38.1' }],
+                  [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.43.1' }],
                   [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
                   require.resolve('@babel/preset-typescript'),
                 ],
@@ -233,17 +234,17 @@ module.exports = (_env, args) => {
         template: './public/index.html',
         minify: isProduction
           ? {
-            collapseWhitespace: true,
-            keepClosingSlash: true,
-            minifyCSS: true,
-            minifyJS: true,
-            minifyURLs: true,
-            removeComments: true,
-            removeEmptyAttributes: true,
-            removeRedundantAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-            useShortDoctype: true,
-          }
+              collapseWhitespace: true,
+              keepClosingSlash: true,
+              minifyCSS: true,
+              minifyJS: true,
+              minifyURLs: true,
+              removeComments: true,
+              removeEmptyAttributes: true,
+              removeRedundantAttributes: true,
+              removeStyleLinkTypeAttributes: true,
+              useShortDoctype: true,
+            }
           : false,
       }),
       isProduction &&
@@ -254,7 +255,12 @@ module.exports = (_env, args) => {
       new WebpackManifestPlugin({}),
       !isProduction && !disableReactRefresh && new ReactRefreshWebpackPlugin({ overlay: false }),
       !disableEslint &&
-        new ESLintPlugin({ extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'], context: appSrc, files: [appSrc] }),
+        new ESLintPlugin({
+          configType: 'eslintrc',
+          extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+          context: appSrc,
+          files: [appSrc],
+        }),
     ].filter(Boolean),
     cache: {
       buildDependencies: { defaultWebpack: ['webpack/lib/'], config: [__filename] },
@@ -270,6 +276,7 @@ module.exports = (_env, args) => {
       ? {}
       : {
           devServer: {
+            allowedHosts: 'all',
             client: { logging: 'info', progress: true },
             compress: true,
             devMiddleware: { publicPath: '/' },

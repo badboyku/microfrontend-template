@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`Component HomePage renders without crashing 1`] = `
+exports[`Page Home renders without crashing 1`] = `
 <DocumentFragment>
   <div>
     <h1>
@@ -20,29 +20,72 @@ exports[`Component HomePage renders without crashing 1`] = `
       logo.svg
     </svg>
     <h3>
-      Env Vars
+      Build Time Env Vars:
     </h3>
-    <div>
-      IS_DEV: 
-      <span
-        style="font-weight: bold;"
+    <div
+      class="envVarsContainer"
+    >
+      <div
+        class="envVar"
       >
-        false
-      </span>
-    </div>
-    <div>
-      IS_PROD: 
-      <span
-        style="font-weight: bold;"
+        <div
+          class="envVarName"
+        >
+          IS_DEV:
+        </div>
+        <div
+          class="envVarValue"
+        >
+          false
+        </div>
+      </div>
+      <div
+        style="display: flex; flex-direction: row; gap: 10px;"
       >
-        true
-      </span>
+        <div
+          class="envVarName"
+        >
+          IS_PROD:
+        </div>
+        <div
+          class="envVarValue"
+        >
+          true
+        </div>
+      </div>
     </div>
-    <div>
-      REACT_APP_MY_ENVVAR: 
-      <span
-        style="font-weight: bold;"
-      />
+    <h3>
+      Runtime Env Vars:
+    </h3>
+    <div
+      class="envVarsContainer"
+    >
+      <div
+        class="envVar"
+      >
+        <div
+          class="envVarName"
+        >
+          NODE_ENV:
+        </div>
+        <div
+          class="envVarValue"
+        >
+          test
+        </div>
+      </div>
+      <div
+        class="envVar"
+      >
+        <div
+          class="envVarName"
+        >
+          REACT_APP_MY_VAR:
+        </div>
+        <div
+          class="envVarValue"
+        />
+      </div>
     </div>
   </div>
 </DocumentFragment>

@@ -1,5 +1,5 @@
 import HelloWorld from 'components/HelloWorld';
-import env from 'utils/env';
+import logger from 'utils/logger';
 import logoUrl, { ReactComponent as Logo } from './logo.svg';
 import './style.scss';
 import './styles.css';
@@ -7,7 +7,7 @@ import './styles.css';
 type Props = {};
 
 const Home = (_props: Props) => {
-  const { REACT_APP_MY_VAR } = env.getEnvVars();
+  logger.debug('microfrontend-template: pages/Home called');
 
   return (
     <div>
@@ -15,15 +15,29 @@ const Home = (_props: Props) => {
       <HelloWorld />
       <img src={logoUrl} className="logo" alt="logo" />
       <Logo width={40} />
-      <h3>Env Vars</h3>
-      <div>
-        IS_DEV: <span style={{ fontWeight: 'bold' }}>{IS_DEV.toString()}</span>
+
+      <h3>Build Time Env Vars:</h3>
+      <div className="envVarsContainer">
+        <div className="envVar">
+          <div className="envVarName">IS_DEV:</div>
+          <div className="envVarValue">{IS_DEV.toString()}</div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+          <div className="envVarName">IS_PROD:</div>
+          <div className="envVarValue">{IS_PROD.toString()}</div>
+        </div>
       </div>
-      <div>
-        IS_PROD: <span style={{ fontWeight: 'bold' }}>{IS_PROD.toString()}</span>
-      </div>
-      <div>
-        REACT_APP_MY_ENVVAR: <span style={{ fontWeight: 'bold' }}>{REACT_APP_MY_VAR}</span>
+
+      <h3>Runtime Env Vars:</h3>
+      <div className="envVarsContainer">
+        {Object.entries(window.__RUNTIME_CONFIG__).map(([name, value]) => {
+          return (
+            <div key={name} className="envVar">
+              <div className="envVarName">{`${name}:`}</div>
+              <div className="envVarValue">{value}</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

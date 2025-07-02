@@ -1,14 +1,57 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { Outlet, useLoaderData } from 'react-router-dom';
+import settings from 'utils/settings';
 import AppRoot from './AppRoot';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  Outlet: jest.fn(),
+  useLoaderData: jest.fn(),
+}));
+jest.mock('components/AppSettingsEditor/AppSettingsEditor', () => () => <div data-testid="app-settings-editor" />);
+jest.mock('utils/logger');
+jest.mock('utils/settings');
 
 const renderAppRoot = (props = {}) => {
   return render(<AppRoot {...props} />);
 };
 
 describe('Component AppRoot', () => {
-  it('renders without crashing', () => {
-    const { asFragment } = renderAppRoot();
+  const isProdBackup = settings.isProd;
 
-    expect(asFragment()).toMatchSnapshot();
+  beforeEach(() => {
+    jest.mocked(useLoaderData).mockReturnValue({ isAuthorized: true });
+  });
+
+  afterAll(() => {
+    settings.isProd = isProdBackup;
+  });
+
+  describe('with settings.isProd = true', () => {
+    it('should not contain AppSettingsEditor component', () => {
+      settings.isProd = true;
+
+      renderAppRoot();
+
+      expect(screen.queryByTestId('app-settings-editor')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('with settings.isProd = false', () => {
+    it('should contain AppSettingsEditor component', () => {
+      settings.isProd = false;
+
+      renderAppRoot();
+
+      expect(screen.getByTestId('app-settings-editor')).toBeInTheDocument();
+    });
+  });
+
+  describe('with isAuthorized = true', () => {
+    it('should contain Outlet component', () => {
+      renderAppRoot();
+
+      expect(Outlet).toHaveBeenCalled();
+    });
   });
 });

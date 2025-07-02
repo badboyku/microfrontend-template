@@ -6,6 +6,7 @@ module.exports = {
     },
     IS_DEV: false,
     IS_PROD: true,
+    SETTINGS_CODE: 'ABCD1234',
   },
   roots: ['<rootDir>/src'],
   collectCoverageFrom: [
@@ -14,7 +15,6 @@ module.exports = {
     '!src/bootstrap.tsx',
     '!src/index.ts',
     '!src/jest.setup.js',
-    '!src/utils/env.ts',
   ],
   coverageDirectory: 'test_coverage',
   coverageThreshold: { global: { branches: 80, functions: 80, lines: 80, statements: 80 } },
