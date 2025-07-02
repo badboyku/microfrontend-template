@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Component AppSettingsEditor renders without crashing 1`] = `
+<DocumentFragment>
+  <button
+    aria-hidden="true"
+    class="settings-button"
+    id="settings-button"
+    tabindex="0"
+    type="button"
+  />
+</DocumentFragment>
+`;

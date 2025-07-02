@@ -1,3 +1,24 @@
 .logo {
   width: 40px;
 }
+
+.envVarsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.envVar {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.envVarName {
+  width: 225px;
+  min-width: 225px;
+  max-width: 225px;
+  white-space: nowrap;
+}
+.envVarValue {
+  font-weight: bold;
+  word-break: break-all;
+}
