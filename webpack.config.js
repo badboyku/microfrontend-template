@@ -3,6 +3,7 @@ const { createHash } = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -251,6 +252,14 @@ module.exports = (_env, args) => {
         new MiniCssExtractPlugin({
           filename: 'css/[name].[contenthash].css',
           chunkFilename: 'css/[name].[contenthash].chunk.css',
+        }),
+      isProduction &&
+        new CopyPlugin({
+          patterns: [
+            { from: 'public/assets', to: 'assets' },
+            { from: 'public/robots.txt', to: '' },
+            { from: 'public/runtime-env.js', to: '' }, // TODO: Handle this for your build process.
+          ],
         }),
       new WebpackManifestPlugin({}),
       !isProduction && !disableReactRefresh && new ReactRefreshWebpackPlugin({ overlay: false }),

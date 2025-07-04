@@ -2,6 +2,7 @@ declare module '@types' {
   import type { JwtPayload } from 'jwt-decode';
 
   type AppSettings = {
+    myVar: string;
     auth: Auth;
     getTokenAsync: () => Promise<string | undefined>;
     isProd: boolean;

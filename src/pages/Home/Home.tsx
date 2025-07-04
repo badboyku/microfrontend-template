@@ -4,10 +4,9 @@ import logoUrl, { ReactComponent as Logo } from './logo.svg';
 import './style.scss';
 import './styles.css';
 
-type Props = {};
-
-const Home = (_props: Props) => {
+const Home = () => {
   logger.debug('microfrontend-template: pages/Home called');
+  const envVars = window.__RUNTIME_CONFIG__ || /* istanbul ignore next */ {};
 
   return (
     <div>
@@ -30,7 +29,7 @@ const Home = (_props: Props) => {
 
       <h3>Runtime Env Vars:</h3>
       <div className="envVarsContainer">
-        {Object.entries(window.__RUNTIME_CONFIG__).map(([name, value]) => {
+        {Object.entries(envVars).map(([name, value]) => {
           return (
             <div key={name} className="envVar">
               <div className="envVarName">{`${name}:`}</div>

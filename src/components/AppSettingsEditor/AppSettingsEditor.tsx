@@ -8,9 +8,7 @@ import './styles.css';
 
 const fields: { name: keyof AppSettings; label: string; help?: string }[] = [{ name: 'token', label: 'Token' }];
 
-type Props = {};
-
-const AppSettingsEditor = (_props: Props) => {
+const AppSettingsEditor = () => {
   logger.debug('microfrontend-template: components/AppSettingsEditor called');
   const { pathname, search } = useLocation();
   const navigate = useNavigate();

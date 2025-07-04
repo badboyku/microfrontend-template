@@ -12,6 +12,7 @@ const isProd = (_location: string) => false;
 /* endregion */
 
 export default {
+  myVar: cleanEnvVar(window.__RUNTIME_CONFIG__?.REACT_APP_MY_VAR),
   auth: { isAuthorized: false, authorizedDateTime: undefined },
   getTokenAsync: () => Promise.resolve(''),
   isProd: true,
@@ -48,7 +49,11 @@ export default {
     logger.debug('microfrontend-template: utils/settings updateSettings called', { settings, persist });
     Object.assign(this, settings);
 
-    if (Object.hasOwn(settings, 'token')) {
+    if (
+      Object.hasOwn(settings, 'token') &&
+      Object.hasOwn(window, '__RUNTIME_CONFIG__') &&
+      Object.hasOwn(window.__RUNTIME_CONFIG__, 'REACT_APP_TOKEN')
+    ) {
       window.__RUNTIME_CONFIG__.REACT_APP_TOKEN = this.token;
     }
 

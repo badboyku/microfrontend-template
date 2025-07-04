@@ -13,6 +13,12 @@ describe('Settings Util', () => {
     window.__RUNTIME_CONFIG__ = envVarsBackup;
   });
 
+  describe('calling myVar', () => {
+    it('returns value from env var', () => {
+      expect(settings.myVar).toEqual(window.__RUNTIME_CONFIG__.REACT_APP_MY_VAR);
+    });
+  });
+
   describe('calling auth', () => {
     it('returns default auth object as default', () => {
       expect(settings.auth).toEqual({ isAuthorized: false, authorizedDateTime: undefined });
@@ -160,6 +166,36 @@ describe('Settings Util', () => {
   });
 
   describe('calling updateSettings', () => {
+    describe('with settings param containing myVar', () => {
+      const newSettings = { myVar: 'myVarNew' };
+
+      it('sets myVar from param', () => {
+        settings.updateSettings(newSettings);
+
+        expect(settings.myVar).toEqual(newSettings.myVar);
+      });
+    });
+
+    describe('with settings param containing auth object', () => {
+      const newSettings = { auth: { isAuthorized: true, authorizedDateTime: 1234 } };
+
+      it('sets auth from param', () => {
+        settings.updateSettings(newSettings);
+
+        expect(settings.auth).toEqual(newSettings.auth);
+      });
+    });
+
+    describe('with settings param containing getTokenAsync', () => {
+      const newSettings = { getTokenAsync: jest.fn() };
+
+      it('sets getTokenAsync from param', () => {
+        settings.updateSettings(newSettings);
+
+        expect(settings.getTokenAsync).toEqual(newSettings.getTokenAsync);
+      });
+    });
+
     describe('with settings param containing isProd', () => {
       const newSettings = { isProd: true };
 
@@ -213,26 +249,6 @@ describe('Settings Util', () => {
         settings.updateSettings(newSettings);
 
         expect(window.__RUNTIME_CONFIG__.REACT_APP_TOKEN).toEqual(newSettings.token);
-      });
-    });
-
-    describe('with settings param containing auth object', () => {
-      const newSettings = { auth: { isAuthorized: true, authorizedDateTime: 1234 } };
-
-      it('sets auth from param', () => {
-        settings.updateSettings(newSettings);
-
-        expect(settings.auth).toEqual(newSettings.auth);
-      });
-    });
-
-    describe('with settings param containing getTokenAsync', () => {
-      const newSettings = { getTokenAsync: jest.fn() };
-
-      it('sets getTokenAsync from param', () => {
-        settings.updateSettings(newSettings);
-
-        expect(settings.getTokenAsync).toEqual(newSettings.getTokenAsync);
       });
     });
 
