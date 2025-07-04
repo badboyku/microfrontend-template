@@ -84,7 +84,35 @@ exports[`Page Home renders without crashing 1`] = `
         </div>
         <div
           class="envVarValue"
+        >
+          somevalue
+        </div>
+      </div>
+      <div
+        class="envVar"
+      >
+        <div
+          class="envVarName"
+        >
+          REACT_APP_LOG_LEVEL:
+        </div>
+        <div
+          class="envVarValue"
         />
+      </div>
+      <div
+        class="envVar"
+      >
+        <div
+          class="envVarName"
+        >
+          REACT_APP_TOKEN:
+        </div>
+        <div
+          class="envVarValue"
+        >
+          false
+        </div>
       </div>
     </div>
   </div>

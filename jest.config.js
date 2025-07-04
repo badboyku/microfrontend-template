@@ -2,7 +2,9 @@ module.exports = {
   globals: {
     __RUNTIME_CONFIG__: {
       NODE_ENV: 'test',
-      REACT_APP_MY_VAR: '',
+      REACT_APP_MY_VAR: 'somevalue',
+      REACT_APP_LOG_LEVEL: '',
+      REACT_APP_TOKEN: 'false',
     },
     IS_DEV: false,
     IS_PROD: true,
