@@ -123,7 +123,7 @@ module.exports = (_env, args) => {
               exclude: /node_modules/,
               options: {
                 presets: [
-                  [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.45.0' }],
+                  [require.resolve('@babel/preset-env'), { useBuiltIns: 'usage', corejs: '3.45.1' }],
                   [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
                   require.resolve('@babel/preset-typescript'),
                 ],
