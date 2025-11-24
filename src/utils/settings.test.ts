@@ -1,11 +1,14 @@
+import { getWindowLocation } from 'utils/window';
 import settings from './settings';
 import type { ReactAppEnvVars } from 'types';
 
 jest.mock('utils/logger');
+jest.mock('utils/window');
 
 describe('Settings Util', () => {
   const envVarsBackup = window.__RUNTIME_CONFIG__ as ReactAppEnvVars;
 
+  const getWindowLocationMock = jest.mocked(getWindowLocation);
   const storageGetItemSpy = jest.spyOn(Storage.prototype, 'getItem');
   const storageSetItemSpy = jest.spyOn(Storage.prototype, 'setItem');
 
@@ -13,64 +16,71 @@ describe('Settings Util', () => {
     window.__RUNTIME_CONFIG__ = envVarsBackup;
   });
 
-  describe('calling myVar', () => {
-    it('returns value from env var', () => {
-      expect(settings.myVar).toEqual(window.__RUNTIME_CONFIG__.REACT_APP_MY_VAR);
-    });
-  });
-
-  describe('calling auth', () => {
-    it('returns default auth object as default', () => {
-      expect(settings.auth).toEqual({ isAuthorized: false, authorizedDateTime: undefined });
-    });
-  });
-
-  describe('calling getTokenAsync', () => {
-    it('returns default getTokenAsync function as default', () => {
-      expect(settings.getTokenAsync).toBeDefined();
+  describe('calling each object property', () => {
+    beforeEach(() => {
+      getWindowLocationMock.mockReturnValueOnce(window.location);
     });
 
-    describe('and calling default getTokenAsync function', () => {
-      it('returns empty string', async () => {
-        const actual = await settings.getTokenAsync();
+    describe('auth', () => {
+      it('returns default auth object as default', () => {
+        expect(settings.auth).toEqual({ isAuthorized: false, authorizedDateTime: undefined });
+      });
+    });
 
-        expect(actual).toEqual('');
+    describe('getTokenAsync', () => {
+      it('returns default getTokenAsync function as default', () => {
+        expect(settings.getTokenAsync).toBeDefined();
+      });
+
+      describe('and calling default getTokenAsync function', () => {
+        it('returns empty string', async () => {
+          const actual = await settings.getTokenAsync();
+
+          expect(actual).toEqual('');
+        });
+      });
+    });
+
+    describe('isProd', () => {
+      it('returns true as default', () => {
+        expect(settings.isProd).toEqual(true);
+      });
+    });
+
+    describe('isRemote', () => {
+      it('returns false as default', () => {
+        expect(settings.isRemote).toEqual(false);
+      });
+    });
+
+    describe('logLevel', () => {
+      it('returns logLevel ERROR as default', () => {
+        expect(settings.logLevel).toEqual('ERROR');
+      });
+    });
+
+    describe('myVar', () => {
+      it('returns value from env var', () => {
+        expect(settings.myVar).toEqual(window.__RUNTIME_CONFIG__.REACT_APP_MY_VAR);
+      });
+    });
+
+    describe('rootPath', () => {
+      it('returns "/" as default', () => {
+        expect(settings.rootPath).toEqual('/');
+      });
+    });
+
+    describe('token', () => {
+      it('returns empty string as default', () => {
+        expect(settings.token).toEqual('');
       });
     });
   });
 
-  describe('calling isProd', () => {
-    it('returns true as default', () => {
-      expect(settings.isProd).toEqual(true);
-    });
-  });
-
-  describe('calling isRemote', () => {
-    it('returns false as default', () => {
-      expect(settings.isRemote).toEqual(false);
-    });
-  });
-
-  describe('calling logLevel', () => {
-    it('returns logLevel ERROR as default', () => {
-      expect(settings.logLevel).toEqual('ERROR');
-    });
-  });
-
-  describe('calling rootPath', () => {
-    it('returns "/" as default', () => {
-      expect(settings.rootPath).toEqual('/');
-    });
-  });
-
-  describe('calling token', () => {
-    it('returns empty string as default', () => {
-      expect(settings.token).toEqual('');
-    });
-  });
-
-  describe('calling init', () => {
+  describe('calling function init', () => {
     it('calls localStorage.getItem', () => {
+      getWindowLocationMock.mockReturnValueOnce(window.location);
       storageGetItemSpy.mockReturnValueOnce(undefined as never);
 
       settings.init();
@@ -79,8 +89,10 @@ describe('Settings Util', () => {
     });
 
     describe('with settings param containing rootPath = "/"', () => {
+      const newSettings = { rootPath: '/' };
+
       it('sets rootPath from param', () => {
-        const newSettings = { rootPath: '/' };
+        getWindowLocationMock.mockReturnValueOnce(window.location);
 
         settings.init(newSettings);
 
@@ -89,8 +101,10 @@ describe('Settings Util', () => {
     });
 
     describe('with settings param containing rootPath having "/*"', () => {
+      const newSettings = { rootPath: 'foo/*' };
+
       it('sets rootPath from param with "/*" removed', () => {
-        const newSettings = { rootPath: 'foo/*' };
+        getWindowLocationMock.mockReturnValueOnce(window.location);
 
         settings.init(newSettings);
 
@@ -98,9 +112,27 @@ describe('Settings Util', () => {
       });
     });
 
+    const testCases = [
+      { test: 'not a production url', location: 'not.production.url', expected: false },
+      { test: 'a production url = "domain.com"', location: 'domain.com', expected: true },
+    ];
+    testCases.forEach(({ test, location, expected }) => {
+      describe(`when window.location.href is ${test}`, () => {
+        it(`sets isProd = ${expected.toString()}`, () => {
+          getWindowLocationMock.mockReturnValueOnce({ href: location } as never);
+
+          settings.init();
+
+          expect(settings.isProd).toEqual(expected);
+        });
+      });
+    });
+
     describe('with settings param containing isRemote', () => {
+      const newSettings = { isRemote: true };
+
       it('sets isRemote from param', () => {
-        const newSettings = { isRemote: true };
+        getWindowLocationMock.mockReturnValueOnce(window.location);
 
         settings.init(newSettings);
 
@@ -109,8 +141,10 @@ describe('Settings Util', () => {
     });
 
     describe('with settings param containing token', () => {
+      const newSettings = { token: 'tokenNew' };
+
       it('sets token from param', () => {
-        const newSettings = { token: 'tokenNew' };
+        getWindowLocationMock.mockReturnValueOnce(window.location);
 
         settings.init(newSettings);
 
@@ -119,8 +153,10 @@ describe('Settings Util', () => {
     });
 
     describe('with settings param containing getTokenAsync', () => {
+      const newSettings = { getTokenAsync: jest.fn() };
+
       it('sets getTokenAsync from param', () => {
-        const newSettings = { getTokenAsync: jest.fn() };
+        getWindowLocationMock.mockReturnValueOnce(window.location);
 
         settings.init(newSettings);
 
@@ -130,6 +166,7 @@ describe('Settings Util', () => {
 
     describe('when localStorage token set', () => {
       it('sets token from localStorage', () => {
+        getWindowLocationMock.mockReturnValueOnce(window.location);
         storageGetItemSpy.mockReturnValueOnce('{"token":"foo"}');
 
         settings.init();
@@ -139,13 +176,15 @@ describe('Settings Util', () => {
     });
   });
 
-  describe('calling getSettings', () => {
+  describe('calling function getSettings', () => {
     it('returns settings', () => {
+      getWindowLocationMock.mockReturnValueOnce(window.location);
+
       expect(settings.getSettings()).toEqual(settings);
     });
   });
 
-  describe('calling isAuthorized', () => {
+  describe('calling function isAuthorized', () => {
     const testCases = [
       { test: 'auth.isAuthorized = false', isAuthorized: false, expected: false },
       { test: 'auth.isAuthorized = true', isAuthorized: true, expected: true },
@@ -154,6 +193,7 @@ describe('Settings Util', () => {
       describe(`with ${test}`, () => {
         beforeEach(() => {
           settings.auth.isAuthorized = isAuthorized;
+          getWindowLocationMock.mockReturnValueOnce(window.location);
         });
 
         it(`returns ${expected.toString()}`, () => {
@@ -165,15 +205,9 @@ describe('Settings Util', () => {
     });
   });
 
-  describe('calling updateSettings', () => {
-    describe('with settings param containing myVar', () => {
-      const newSettings = { myVar: 'myVarNew' };
-
-      it('sets myVar from param', () => {
-        settings.updateSettings(newSettings);
-
-        expect(settings.myVar).toEqual(newSettings.myVar);
-      });
+  describe('calling function updateSettings', () => {
+    beforeEach(() => {
+      getWindowLocationMock.mockReturnValueOnce(window.location);
     });
 
     describe('with settings param containing auth object', () => {
@@ -223,6 +257,16 @@ describe('Settings Util', () => {
         settings.updateSettings(newSettings);
 
         expect(settings.logLevel).toEqual(newSettings.logLevel);
+      });
+    });
+
+    describe('with settings param containing myVar', () => {
+      const newSettings = { myVar: 'myVarNew' };
+
+      it('sets myVar from param', () => {
+        settings.updateSettings(newSettings);
+
+        expect(settings.myVar).toEqual(newSettings.myVar);
       });
     });
 

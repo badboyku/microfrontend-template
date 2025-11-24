@@ -3,8 +3,8 @@ import authorization from './authorization';
 
 jest.mock('jwt-decode');
 jest.mock('react-router-dom');
-jest.mock('./logger');
-jest.mock('./settings');
+jest.mock('utils/logger');
+jest.mock('utils/settings');
 
 describe('Util authorization', () => {
   const token = 'token';
