@@ -1,8 +1,8 @@
 /* eslint-disable no-console, testing-library/no-debugging-utils */
+import settings from 'utils/settings';
 import logger from './logger';
-import settings from './settings';
 
-jest.mock('./settings');
+jest.mock('utils/settings');
 
 describe('Util logger', () => {
   const message = 'message';

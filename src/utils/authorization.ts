@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import logger from './logger';
+import logger from 'utils/logger';
 import type { TokenPayLoad } from '@types';
 
 /* region Private helper functions */
