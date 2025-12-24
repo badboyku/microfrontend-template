@@ -25,6 +25,10 @@ const Home = () => {
           <div className="envVarName">IS_PROD:</div>
           <div className="envVarValue">{IS_PROD.toString()}</div>
         </div>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+          <div className="envVarName">SETTINGS_CODE:</div>
+          <div className="envVarValue">{SETTINGS_CODE.toString()}</div>
+        </div>
       </div>
 
       <h3>Runtime Env Vars:</h3>
