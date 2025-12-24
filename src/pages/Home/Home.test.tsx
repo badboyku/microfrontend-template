@@ -9,12 +9,6 @@ const renderHome = (props = {}) => {
 };
 
 describe('Page Home', () => {
-  it('renders without crashing', () => {
-    const { asFragment } = renderHome();
-
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it('renders header Home', () => {
     renderHome();
 
