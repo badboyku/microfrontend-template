@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
-import { useLocation, useNavigate, useRevalidator } from 'react-router-dom';
+import { useLocation, useNavigate, useRevalidator } from 'react-router';
 import AppSettingsEditor from './AppSettingsEditor';
 
-jest.mock('react-router-dom');
+jest.mock('react-router');
 jest.mock('utils/logger');
 
 const renderAppSettingsEditor = (props = {}) => {

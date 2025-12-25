@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate, useRevalidator } from 'react-router-dom';
+import { useLocation, useNavigate, useRevalidator } from 'react-router';
 import logger from 'utils/logger';
 import settings from 'utils/settings';
 import type { AppSettings } from '@types';

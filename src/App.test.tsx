@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 import App from './App';
 import { getRoutes } from './routes';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
   createBrowserRouter: jest.fn(),
   RouterProvider: jest.fn(),
 }));

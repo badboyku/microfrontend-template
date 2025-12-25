@@ -40,18 +40,9 @@
       "jest -u --findRelatedTests --passWithNoTests"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2% and not dead and not op_mini all"
+  ],
   "dependencies": {
     "@babel/runtime": "^7.28.4",
     "@babel/runtime-corejs3": "^7.28.4",
@@ -59,7 +50,7 @@
     "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.2",
+    "react-router": "^7.11.0",
     "runtime-env-cra": "^0.2.4"
   },
   "devDependencies": {
