@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router';
 import AppSettingsEditor from 'components/AppSettingsEditor';
 import logger from 'utils/logger';
 import settings from 'utils/settings';

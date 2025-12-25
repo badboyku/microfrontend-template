@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import authorization from './authorization';
 
 jest.mock('jwt-decode');
-jest.mock('react-router-dom');
+jest.mock('react-router');
 jest.mock('utils/logger');
 jest.mock('utils/settings');
 

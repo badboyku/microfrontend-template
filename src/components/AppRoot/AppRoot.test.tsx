@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { Outlet, useLoaderData } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router';
 import settings from 'utils/settings';
 import AppRoot from './AppRoot';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
   Outlet: jest.fn(),
   useLoaderData: jest.fn(),
 }));

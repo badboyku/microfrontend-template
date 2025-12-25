@@ -1,11 +1,11 @@
-import { redirect } from 'react-router-dom';
+import { redirect } from 'react-router';
 import AppError from 'components/AppError';
 import AppRoot from 'components/AppRoot';
 import Home from 'pages/Home';
 import loaders from 'utils/loaders';
 import logger from 'utils/logger';
 import settings from 'utils/settings';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 type Props = {
   path?: string;

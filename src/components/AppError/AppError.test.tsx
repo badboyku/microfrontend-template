@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
+import { isRouteErrorResponse, useRouteError } from 'react-router';
 import settings from 'utils/settings';
 import AppError from './AppError';
 
-jest.mock('react-router-dom');
+jest.mock('react-router');
 jest.mock('components/AppSettingsEditor/AppSettingsEditor', () => () => <div data-testid="appSettingsEditor" />);
 jest.mock('utils/logger');
 
