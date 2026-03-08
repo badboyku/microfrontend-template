@@ -50,11 +50,7 @@ export default {
     logger.debug('microfrontend-template: utils/settings updateSettings called', { settings, persist });
     Object.assign(this, settings);
 
-    if (
-      Object.hasOwn(settings, 'token') &&
-      Object.hasOwn(window, '__RUNTIME_CONFIG__') &&
-      Object.hasOwn(window.__RUNTIME_CONFIG__, 'REACT_APP_TOKEN')
-    ) {
+    if (Object.hasOwn(settings, 'token')) {
       window.__RUNTIME_CONFIG__.REACT_APP_TOKEN = this.token;
     }
 

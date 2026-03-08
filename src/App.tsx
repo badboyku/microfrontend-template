@@ -5,10 +5,13 @@ import settings from './utils/settings';
 
 settings.init();
 
+const routes = getRoutes();
+const router = createBrowserRouter(routes);
+
 const App = () => {
   logger.debug('microfrontend-template: App called');
 
-  return <RouterProvider router={createBrowserRouter(getRoutes())} />;
+  return <RouterProvider router={router} />;
 };
 
 export default App;
